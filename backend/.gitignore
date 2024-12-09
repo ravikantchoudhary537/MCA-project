@@ -1,0 +1,34 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# dotenv environment variable files
+.env
+
+# Logs
+logs/
+*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor specific files
+.idea/
+.vscode/
+
+# Build and temporary files
+dist/
+build/
+
+# Dependency directories
+/node_modules/
+
+# Optional: If you're using Docker
+Dockerfile
+docker-compose.yml
+
+# Optional: If you're using IDEs like Visual Studio Code
+.vscode/
