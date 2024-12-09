@@ -10,7 +10,7 @@ function Sidebar({
 }) {
   const location = useLocation();
   const { pathname } = location;
-
+  
   const trigger = useRef(null);
   const sidebar = useRef(null);
 
@@ -38,7 +38,7 @@ function Sidebar({
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
-  useEffect(() => {
+  useEffect(() => { 
     localStorage.setItem("sidebar-expanded", sidebarExpanded);
     if (sidebarExpanded) {
       document.querySelector("body").classList.add("sidebar-expanded");
@@ -98,8 +98,8 @@ function Sidebar({
             </h3>
             <ul className="mt-3">
               {/* Dashboard */}
-              <SidebarLinkGroup activecondition={pathname === "/" || pathname.includes("dashboard")}>
-                {(handleClick, open) => {
+              <SidebarLinkGroup activecondition={pathname === "/dashboard"}>
+              {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <a
@@ -136,7 +136,7 @@ function Sidebar({
                           <li className="mb-1 last:mb-0">
                             <NavLink
                               end
-                              to="/Dashboard"
+                              to="/dashboard"
                               className={({ isActive }) =>
                                 "block transition duration-150 truncate " + (isActive ? "text-violet-500" : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200")
                               }
@@ -153,7 +153,7 @@ function Sidebar({
                 }}
               </SidebarLinkGroup>
                {/* Overview */}
-               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("inbox") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
+               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("overview") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
                 <NavLink
                   end
                   to="/dashboard/overview"
@@ -170,10 +170,10 @@ function Sidebar({
                 </NavLink>
               </li>
                {/* Fill a form */}
-               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("inbox") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
+               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("fillform") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
                 <NavLink
                   end
-                  to="/Dashboard/fillform"
+                  to="/dashboard/fillform"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
                     pathname.includes("inbox") ? "" : "hover:text-gray-900 dark:hover:text-white"
                   }`}
@@ -187,10 +187,10 @@ function Sidebar({
                 </NavLink>
               </li>
                {/* status */}
-               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("inbox") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
+               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("status") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
                 <NavLink
                   end
-                  to="/Dashboard/status"
+                  to="/dashboard/status"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
                     pathname.includes("inbox") ? "" : "hover:text-gray-900 dark:hover:text-white"
                   }`}
@@ -205,10 +205,10 @@ function Sidebar({
                 </NavLink>
               </li>
                {/* Payment */}
-               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("inbox") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
+               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("payment") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
                 <NavLink
                   end
-                  to="/Dashboard/payment"
+                  to="/dashboard/payment"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
                     pathname.includes("inbox") ? "" : "hover:text-gray-900 dark:hover:text-white"
                   }`}

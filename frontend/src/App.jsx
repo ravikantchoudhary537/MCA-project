@@ -23,11 +23,11 @@ function App() {
       <Routes>
           <Route path="/login" element={<Login />} />
         <Route path="/" element={<DefaultLayout />} >
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Dashboard/overview" element={<Overview />} />
-          <Route path="/Dashboard/fillform" element={<FillaForm />} />
-          <Route path="/Dashboard/payment" element={<Payment />} />
-          <Route path="/Dashboard/status" element={<Status />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/overview" element={<Overview />} />
+          <Route path="/dashboard/fillform" element={<FillaForm />} />
+          <Route path="/dashboard/payment" element={<Payment />} />
+          <Route path="/dashboard/status" element={<Status />} />
           <Route path="/settings" element={<Setting />} />
           {/* <Route path="/Customer" element={<Customer />} />
           <Route path="/People" element={<People />} /> */}
