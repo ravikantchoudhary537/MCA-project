@@ -93,6 +93,7 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
 exports.getUserDetails = async (req, res) => {
     try {
         // Get user ID from the token payload
