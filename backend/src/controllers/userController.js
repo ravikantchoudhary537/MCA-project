@@ -65,6 +65,35 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+exports.getUserById = async (req, res) => {
+    const { userid } = req.query;  // Retrieve the `userid` from query params
+
+    if (!userid) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    try {
+        // Query the database to fetch user details
+        const result = await pool.query('SELECT name, email, number FROM "user" WHERE id = $1', [userid]);
+        const user = result.rows[0];
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Return hardcoded id: "<id>"
+        res.json({
+            id: "<id>",  // Hardcoded placeholder for id
+            name: user.name,
+            email: user.email,
+            number: user.number
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 exports.getUserDetails = async (req, res) => {
     try {
         // Get user ID from the token payload
