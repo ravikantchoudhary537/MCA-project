@@ -14,6 +14,7 @@ import FillaForm from './pages/FillForm/FillaForm';
 import Payment from './pages/payment/Payment';
 import Status from './pages/status/Status';
 import Setting from './pages/settings/Setting';
+import SingUp from './pages/signup/SingUp';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         
         <Route path="/login" element={<Login />} />
+        <Route path="/singup" element={<SingUp />} />
         <Route path="/" element={<DefaultLayout />} >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/overview" element={<Overview />} />
