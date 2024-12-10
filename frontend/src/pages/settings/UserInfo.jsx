@@ -18,7 +18,7 @@ const UserInfo = () => {
               </div>
               {/* Info Section */}
               <div className="lg:w-2/3 lg:pl-10">
-                <div className="bg-secondary dark:bg-gray-700 py-4 px-6 rounded text-white mb-4">
+                <div className="bg-gray-600 dark:bg-gray-700 py-4 px-6 rounded text-white mb-4">
                   <h3 className="text-2xl font-bold mb-1 dark:text-gray-100">
                     John Mark Doe Kyzer
                   </h3>
