@@ -56,11 +56,12 @@ const Login = () => {
         </div>
 
         {/* Login Form Section */}
-        <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg lg:w-5/12">
+        <div className="w-full max-w-md p-5 lg:w-5/12">
+          <h1 className="text-2xl font-bold text-blue-500 text-center mb-4">WELCOME TO MCA</h1>
           <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
 
           {error && (
-            <p className="text-center text-red-500 text-sm mb-4">{error}</p>
+            <p className="text-center text-blue-500 text-sm mb-4">{error}</p>
           )}
 
           <form onSubmit={handleLoginForm}>
