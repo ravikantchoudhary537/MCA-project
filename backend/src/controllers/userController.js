@@ -12,12 +12,7 @@ const generateTokens = (userId) => {
     });
     return { accessToken, refreshToken };
 };
-<<<<<<< Updated upstream
-exports.registerUser = async (req, res) => {
-=======
-
 exports.registerUser = async (req, res) => { 
->>>>>>> Stashed changes
     const { name, email, number, password } = req.body;
 
     if (!name || !email || !number || !password) {
@@ -154,11 +149,6 @@ exports.getUserDetails = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
-
-<<<<<<< Updated upstream
-=======
-
 exports.fillForm = async (req, res) => {
     const { id, name, value, created_by, status } = req.body;
 
@@ -184,4 +174,3 @@ exports.fillForm = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
->>>>>>> Stashed changes
