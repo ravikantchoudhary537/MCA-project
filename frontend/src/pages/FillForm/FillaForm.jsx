@@ -11,7 +11,7 @@ const FillaForm = () => {
     name: '',
     value: '',
     createdBy: '',
-    status: '',
+    status: '', // Ensure the status field is part of the formData
   });
 
   const [errors, setErrors] = useState({}); // State to store validation errors
@@ -34,6 +34,14 @@ const FillaForm = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  // Handle select field changes
+  const handleSelectChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      status: value,
     }));
   };
 
@@ -69,7 +77,10 @@ const FillaForm = () => {
 
               {/* Dynamic Input or Select */}
               {field.type === 'select' ? (
-                <Select name={field.name} value={formData[field.name]} onChange={handleInputChange}>
+                <Select
+                  value={formData[field.name]} // Set the selected value
+                  onValueChange={handleSelectChange} // Correct handler for select value change
+                >
                   <SelectTrigger>
                     <SelectValue placeholder={field.placeholder} />
                   </SelectTrigger>
@@ -94,7 +105,7 @@ const FillaForm = () => {
 
               {/* Dynamic Error Message */}
               {errors[field.name] && (
-                <p className="text-red-600 text-sm">{errors[field.name]}</p>
+                <p className="text-blue-500 text-sm">{errors[field.name]}</p>
               )}
             </div>
           ))}
@@ -102,7 +113,7 @@ const FillaForm = () => {
 
         {/* Submit Button */}
         <div className="py-5">
-          <Button type="submit" className="px-6 py-4 rounded-lg hover:bg-gray-800">
+          <Button type="submit" className="px-6 py-4 rounded-lg">
             Submit
           </Button>
         </div>
