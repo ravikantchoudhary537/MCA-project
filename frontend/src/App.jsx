@@ -15,7 +15,7 @@ import Payment from './pages/payment/Payment';
 import Status from './pages/status/Status';
 import Setting from './pages/settings/Setting';
 import Logout from './auth/logout/Logout';
-
+import SingUp from './pages/signup/SingUp'
 function App() {
 
   return (
@@ -24,6 +24,7 @@ function App() {
       <Routes>
         
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SingUp />} />
         <Route path="/" element={<DefaultLayout />} >
           <Route path="/overview" element={<Overview />} />
           <Route path="/fillform" element={<FillaForm />} />
