@@ -14,8 +14,8 @@ import FillaForm from './pages/FillForm/FillaForm';
 import Payment from './pages/payment/Payment';
 import Status from './pages/status/Status';
 import Setting from './pages/settings/Setting';
-import SingUp from './pages/signup/SingUp';
-
+import Logout from './auth/logout/Logout';
+import SingUp from './pages/signup/SingUp'
 function App() {
 
   return (
@@ -26,14 +26,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SingUp />} />
         <Route path="/" element={<DefaultLayout />} >
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/overview" element={<Overview />} />
-          <Route path="/dashboard/fillform" element={<FillaForm />} />
-          <Route path="/dashboard/payment" element={<Payment />} />
-          <Route path="/dashboard/status" element={<Status />} />
+          <Route path="/overview" element={<Overview />} />
+          <Route path="/fillform" element={<FillaForm />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/status" element={<Status />} />
           <Route path="/settings" element={<Setting />} />
-          {/* <Route path="/Customer" element={<Customer />} />
-          <Route path="/People" element={<People />} /> */}
+          <Route path="/logout" element={<Logout />} />
         </Route>
       </Routes>
       </BrowserRouter>
