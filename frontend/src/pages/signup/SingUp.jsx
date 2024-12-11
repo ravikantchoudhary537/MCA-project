@@ -1,26 +1,30 @@
 import React, { useState } from "react";
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import axios from "axios"; // For API requests
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        phone: "",
-        password: "",
-    });
-    
-    const [errors, setErrors] = useState({
-        name: "",
-        email: "",
-        phone: "",
+        number: "",
         password: "",
     });
 
+    const [errors, setErrors] = useState({
+        name: "",
+        email: "",
+        number: "",
+        password: "",
+    });
+
+    const [serverResponse, setServerResponse] = useState(null); 
+     const Navigate = useNavigate();
     const fields = [
         { label: "Name", name: "name", type: "text", placeholder: "Enter your name" },
         { label: "Email", name: "email", type: "email", placeholder: "Enter your email" },
-        { label: "Phone Number", name: "phone", type: "tel", placeholder: "Enter your phone number" },
+        { label: "number Number", name: "number", type: "tel", placeholder: "Enter your number number" },
         { label: "Password", name: "password", type: "password", placeholder: "Enter your password" },
     ];
 
@@ -40,7 +44,7 @@ function SignUp() {
 
     const validate = () => {
         let isValid = true;
-        let newErrors = { name: "", email: "", phone: "", password: "" };
+        let newErrors = { name: "", email: "", number: "", password: "" };
 
         const nameRegex = /^[A-Za-z\s-'.,]+$/;
         if (!formData.name.trim()) {
@@ -60,12 +64,12 @@ function SignUp() {
             isValid = false;
         }
 
-        const phoneRegex = /^[0-9]{10}$/;
-        if (!formData.phone.trim()) {
-            newErrors.phone = "Phone number is required.";
+        const numberRegex = /^[0-9]{10}$/;
+        if (!formData.number.trim()) {
+            newErrors.number = "number number is required.";
             isValid = false;
-        } else if (!phoneRegex.test(formData.phone)) {
-            newErrors.phone = "Please enter a valid 10-digit phone number.";
+        } else if (!numberRegex.test(formData.number)) {
+            newErrors.number = "Please enter a valid 10-digit number number.";
             isValid = false;
         }
 
@@ -81,12 +85,28 @@ function SignUp() {
         return isValid;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (validate()) {
-            console.log(formData);
-            // Handle form submission (e.g., send to server)
+            console.log("Form data:", formData);
+            try {
+                const response = await axios.post("http://localhost:8000/api/mca/register", formData);
+                setServerResponse({
+                    type: "success",
+                    message: response.data.message,
+                });
+                 Navigate("/login");
+                console.log("User registered successfully:", response.data);
+            } catch (error) {
+                const errorMessage =
+                    error.response?.data?.error || "Something went wrong. Please try again.";
+                setServerResponse({
+                    type: "error",
+                    message: errorMessage,
+                });
+                console.error("Error registering user:", errorMessage);
+            }
         }
     };
 
@@ -94,7 +114,13 @@ function SignUp() {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-md overflow-hidden">
                 {/* Left Side (Image) */}
-                <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: 'url("https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg?t=st=1733829408~exp=1733833008~hmac=9cbb9c630f734649685bac9d1600b6c909e2bf0f8a74694f9997168bfa445dd1&w=740")' }}></div>
+                <div
+                    className="w-1/2 bg-cover bg-center"
+                    style={{
+                        backgroundImage:
+                            'url("https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg?t=st=1733829408~exp=1733833008~hmac=9cbb9c630f734649685bac9d1600b6c909e2bf0f8a74694f9997168bfa445dd1&w=740")',
+                    }}
+                ></div>
 
                 {/* Right Side (Form) */}
                 <div className="w-1/2 p-8">
@@ -103,7 +129,10 @@ function SignUp() {
 
                         {fields.map((field) => (
                             <div className="mb-4" key={field.name}>
-                                <label htmlFor={field.name} className="block text-sm font-semibold mb-1">
+                                <label
+                                    htmlFor={field.name}
+                                    className="block text-sm font-semibold mb-1"
+                                >
                                     {field.label}
                                 </label>
                                 <Input
@@ -115,7 +144,11 @@ function SignUp() {
                                     placeholder={field.placeholder}
                                     className="w-full p-3 border border-gray-300 rounded-md"
                                 />
-                                {errors[field.name] && <p className="text-blue-500 text-xs mt-1">{errors[field.name]}</p>}
+                                {errors[field.name] && (
+                                    <p className="text-blue-500 text-xs mt-1">
+                                        {errors[field.name]}
+                                    </p>
+                                )}
                             </div>
                         ))}
 
@@ -124,6 +157,19 @@ function SignUp() {
                                 Sign Up
                             </Button>
                         </div>
+
+                        {/* Show server response */}
+                        {serverResponse && (
+                            <p
+                                className={`mt-4 text-center text-sm ${
+                                    serverResponse.type === "success"
+                                        ? "text-green-500"
+                                        : "text-red-500"
+                                }`}
+                            >
+                                {serverResponse.message}
+                            </p>
+                        )}
                     </form>
                 </div>
             </div>

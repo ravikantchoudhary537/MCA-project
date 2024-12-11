@@ -63,7 +63,6 @@ exports.loginUser = async (req, res) => {
         // Check if user exists
         const result = await pool.query('SELECT * FROM "user" WHERE email = $1', [email]);
         const user = result.rows[0];
-
         if (!user) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios"; // Import axios
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -22,9 +23,10 @@ const Login = () => {
   }, []);
 
   // Handle form submission
-  const handleLoginForm = (e) => {
+  const handleLoginForm = async (e) => {
     e.preventDefault();
 
+    // Validate inputs
     if (!email || !password || !captchaInput) {
       setError("Please fill in all fields, including the CAPTCHA.");
       return;
@@ -35,11 +37,31 @@ const Login = () => {
       return;
     }
 
-    // For demonstration: Check if email/password is admin
-    if (email === "admin@gmail.com" && password === "admin") {
-      window.location.href = "/Dashboard";
-    } else {
-      setError("Invalid email or password.");
+    // Make API request to backend
+    setError(null);
+    setIsLoading(true);
+    try {
+      const response = await axios.post("http://localhost:8000/api/mca/login", {
+        email,
+        password,
+      });
+
+      const { accessToken, refreshToken, message } = response.data;
+
+      // Save tokens to local storage or cookies
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      // Redirect to dashboard
+      alert(message);
+      window.location.href = "/overview";
+    } catch (err) {
+      // Handle error response
+      setError(
+        err.response?.data?.error || "An error occurred. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,7 +97,7 @@ const Login = () => {
                 type="email"
                 placeholder="Enter your email"
                 value={email}
-                onInput={(e) => setEmail((e.target).value)}
+                onInput={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -93,9 +115,7 @@ const Login = () => {
                 type="password"
                 placeholder="Enter your password"
                 value={password}
-                onInput={(e) =>
-                  setPassword((e.target).value)
-                }
+                onInput={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
@@ -111,9 +131,7 @@ const Login = () => {
                   type="text"
                   placeholder="Enter CAPTCHA"
                   value={captchaInput}
-                  onInput={(e) =>
-                    setCaptchaInput((e.target).value)
-                  }
+                  onInput={(e) => setCaptchaInput(e.target.value)}
                   required
                 />
                 <span className="bg-gray-200 px-4 py-2 rounded font-mono text-lg">
@@ -128,8 +146,6 @@ const Login = () => {
                 </Button>
               </div>
             </div>
-
-            {/* Login Button */}
             <Button
               type="submit"
               className="w-full bg-primary text-white"
@@ -138,30 +154,6 @@ const Login = () => {
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
-
-          {/* Social Login Section (Optional) */}
-          {/* <div className="mt-8 text-center">
-            <p className="text-sm mb-4">Sign in with</p>
-            <div className="flex justify-center space-x-4">
-              <TERipple rippleColor="light">
-                <button
-                  type="button"
-                  className="h-9 w-9 bg-blue-600 rounded-full text-white"
-                >
-                  <i className="fab fa-facebook-f"></i>
-                </button>
-              </TERipple>
-
-              <TERipple rippleColor="light">
-                <button
-                  type="button"
-                  className="h-9 w-9 bg-blue-400 rounded-full text-white"
-                >
-                  <i className="fab fa-twitter"></i>
-                </button>
-              </TERipple>
-            </div>
-          </div> */}
         </div>
       </div>
     </section>
