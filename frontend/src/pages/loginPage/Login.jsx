@@ -61,7 +61,7 @@ const Login = () => {
           <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
 
           {error && (
-            <p className="text-center text-red-500 text-sm mb-4">{error}</p>
+            <p className="text-center text-blue-500 text-sm mb-4">{error}</p>
           )}
 
           <form onSubmit={handleLoginForm}>

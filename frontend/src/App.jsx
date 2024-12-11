@@ -24,7 +24,7 @@ function App() {
       <Routes>
         
         <Route path="/login" element={<Login />} />
-        <Route path="/singup" element={<SingUp />} />
+        <Route path="/signup" element={<SingUp />} />
         <Route path="/" element={<DefaultLayout />} >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/overview" element={<Overview />} />
