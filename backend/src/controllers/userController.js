@@ -12,7 +12,12 @@ const generateTokens = (userId) => {
     });
     return { accessToken, refreshToken };
 };
+<<<<<<< Updated upstream
 exports.registerUser = async (req, res) => {
+=======
+
+exports.registerUser = async (req, res) => { 
+>>>>>>> Stashed changes
     const { name, email, number, password } = req.body;
 
     if (!name || !email || !number || !password) {
@@ -151,3 +156,32 @@ exports.getUserDetails = async (req, res) => {
 };
 
 
+<<<<<<< Updated upstream
+=======
+
+exports.fillForm = async (req, res) => {
+    const { id, name, value, created_by, status } = req.body;
+
+    if (!id || !name || !value || !created_by || !status) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    try {
+        const existingEntry = await pool.query('SELECT * FROM "form_data" WHERE id = $1', [id]);
+
+        if (existingEntry.rows.length > 0) {
+            return res.status(400).json({ error: 'Data already exists for this user ID' });
+        }
+        // Insert data into the database
+        await pool.query(
+            'INSERT INTO form_data (id, name, value, created_by, status) VALUES ($1, $2, $3, $4, $5)',
+            [id, name, value, created_by, status]
+        );
+
+        res.status(201).json({ message: 'Form data submitted successfully' });
+    } catch (error) {
+        console.error('Error inserting form data:', error.message);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+>>>>>>> Stashed changes
