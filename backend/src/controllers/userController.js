@@ -12,7 +12,6 @@ const generateTokens = (userId) => {
     });
     return { accessToken, refreshToken };
 };
-
 exports.registerUser = async (req, res) => {
     const { name, email, number, password } = req.body;
 
@@ -51,7 +50,6 @@ exports.registerUser = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -87,8 +85,6 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
-// Refresh Token
 exports.refreshToken = async (req, res) => {
     const { token } = req.body;
 
@@ -106,7 +102,6 @@ exports.refreshToken = async (req, res) => {
         res.status(401).json({ error: 'Invalid or expired refresh token' });
     }
 };
-
 exports.getUserById = async (req, res) => {
     const { userid } = req.query;  // Retrieve the `userid` from query params
 
@@ -135,7 +130,6 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
 exports.getUserDetails = async (req, res) => {
     try {
         // Get user ID from the token payload
@@ -155,3 +149,5 @@ exports.getUserDetails = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
+
