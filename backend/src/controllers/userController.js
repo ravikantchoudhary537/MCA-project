@@ -2,7 +2,6 @@ const pool = require('../models/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
 const generateTokens = (userId) => {
     const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET_ACCESS, {
         expiresIn: process.env.JWT_EXPIRATION_ACCESS,
