@@ -1,45 +1,92 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [captchaInput, setCaptchaInput] = useState("");
-  const [generatedCaptcha, setGeneratedCaptcha] = useState("");
+const Login = ({ setIsAuthenticated }) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    captchaInput: "",
+  });
+  const [captcha, setCaptcha] = useState("");
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Function to generate a random CAPTCHA
+  const navigate = useNavigate();
+
+  /**
+   * Generates a random CAPTCHA on component mount and when refreshed.
+   */
   const generateCaptcha = () => {
-    const captcha = Math.random().toString(36).substring(2, 8).toUpperCase();
-    setGeneratedCaptcha(captcha);
+    const randomCaptcha = Math.random().toString(36).substring(2, 8).toUpperCase();
+    setCaptcha(randomCaptcha);
   };
 
-  // Initialize CAPTCHA on component mount
   useEffect(() => {
     generateCaptcha();
   }, []);
 
-  // Handle form submission
-  const handleLoginForm = (e) => {
+  /**
+   * Handles form input changes for all fields.
+   * @param {Object} e - Event object from the input change.
+   */
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  /**
+   * Handles the login form submission.
+   * @param {Object} e - Event object from the form submission.
+   */
+  const handleLoginForm = async (e) => {
     e.preventDefault();
 
+    const { email, password, captchaInput } = formData;
+
+    // Input validation
     if (!email || !password || !captchaInput) {
-      setError("Please fill in all fields, including the CAPTCHA.");
+      setError("All fields are required, including the CAPTCHA.");
       return;
     }
 
-    if (captchaInput !== generatedCaptcha) {
+    if (captchaInput !== captcha) {
       setError("Invalid CAPTCHA. Please try again.");
+      generateCaptcha(); // Refresh CAPTCHA on error
       return;
     }
 
-    // For demonstration: Check if email/password is admin
-    if (email === "admin@gmail.com" && password === "admin") {
-      window.location.href = "/Dashboard";
-    } else {
-      setError("Invalid email or password.");
+    // API call to handle login
+    setError(null);
+    setIsLoading(true);
+    try {
+      const response = await axios.post("http://localhost:8000/api/mca/login", {
+        email,
+        password,
+      });
+
+      const { accessToken, refreshToken, message } = response.data;
+
+      // Save tokens to localStorage
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      // Update authentication state and navigate
+      setIsAuthenticated(true);
+      navigate("/overview");
+      alert(message);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "An error occurred. Please try again.";
+      setError(errorMessage);
+      setIsAuthenticated(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -47,7 +94,7 @@ const Login = () => {
     <section className="h-screen">
       <div className="h-full flex items-center justify-center lg:flex-row flex-col">
         {/* Left Image Section */}
-        <div className="lg:flex lg:w-6/12">
+        <div className="lg:w-6/12 hidden lg:flex">
           <img
             src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
             alt="Login Illustration"
@@ -57,13 +104,17 @@ const Login = () => {
 
         {/* Login Form Section */}
         <div className="w-full max-w-md p-5 lg:w-5/12">
-          <h1 className="text-2xl font-bold text-blue-500 text-center mb-4">WELCOME TO MCA</h1>
-          <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
+          <h1 className="text-2xl font-bold text-blue-500 text-center mb-4">
+            WELCOME TO MCA
+          </h1>
+          <h2 className="text-xl font-semibold text-center mb-4">Login</h2>
 
+          {/* Error Message */}
           {error && (
-            <p className="text-center text-blue-500 text-sm mb-4">{error}</p>
+            <p className="text-center text-red-500 text-sm mb-4">{error}</p>
           )}
 
+          {/* Login Form */}
           <form onSubmit={handleLoginForm}>
             {/* Email Input */}
             <div className="mb-6">
@@ -74,8 +125,8 @@ const Login = () => {
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                value={email}
-                onInput={(e) => setEmail((e.target).value)}
+                value={formData.email}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -92,44 +143,36 @@ const Login = () => {
                 id="password"
                 type="password"
                 placeholder="Enter your password"
-                value={password}
-                onInput={(e) =>
-                  setPassword((e.target).value)
-                }
+                value={formData.password}
+                onChange={handleInputChange}
                 required
               />
             </div>
 
             {/* CAPTCHA */}
             <div className="mb-6">
-              <label htmlFor="captcha" className="block mb-2 text-sm font-medium">
+              <label htmlFor="captchaInput" className="block mb-2 text-sm font-medium">
                 Enter the CAPTCHA
               </label>
               <div className="flex items-center space-x-2">
                 <Input
-                  id="captcha"
+                  id="captchaInput"
                   type="text"
                   placeholder="Enter CAPTCHA"
-                  value={captchaInput}
-                  onInput={(e) =>
-                    setCaptchaInput((e.target).value)
-                  }
+                  value={formData.captchaInput}
+                  onChange={handleInputChange}
                   required
                 />
                 <span className="bg-gray-200 px-4 py-2 rounded font-mono text-lg">
-                  {generatedCaptcha}
+                  {captcha}
                 </span>
-                <Button
-                  type="button"
-                  onClick={generateCaptcha}
-                  className="text-sm"
-                >
+                <Button type="button" onClick={generateCaptcha} className="text-sm">
                   Refresh
                 </Button>
               </div>
             </div>
 
-            {/* Login Button */}
+            {/* Submit Button */}
             <Button
               type="submit"
               className="w-full bg-primary text-white"
@@ -138,30 +181,6 @@ const Login = () => {
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
-
-          {/* Social Login Section (Optional) */}
-          {/* <div className="mt-8 text-center">
-            <p className="text-sm mb-4">Sign in with</p>
-            <div className="flex justify-center space-x-4">
-              <TERipple rippleColor="light">
-                <button
-                  type="button"
-                  className="h-9 w-9 bg-blue-600 rounded-full text-white"
-                >
-                  <i className="fab fa-facebook-f"></i>
-                </button>
-              </TERipple>
-
-              <TERipple rippleColor="light">
-                <button
-                  type="button"
-                  className="h-9 w-9 bg-blue-400 rounded-full text-white"
-                >
-                  <i className="fab fa-twitter"></i>
-                </button>
-              </TERipple>
-            </div>
-          </div> */}
         </div>
       </div>
     </section>
