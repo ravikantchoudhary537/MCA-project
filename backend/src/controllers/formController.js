@@ -39,22 +39,22 @@ exports.getsuccessforms = async (req , res) => {
     }
 }
 exports.fillForm = async (req, res) => {
-    const { id, name, value, created_by, status } = req.body;
+    const { id, form_name, form_value,created_at,created_by, status} = req.body;
 
-    if (!id || !name || !value || !created_by || !status) {
+    if (!id || !form_name || !form_value || !created_by || !created_at || !status) {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
     try {
-        const existingEntry = await pool.query('SELECT * FROM "form_data" WHERE id = $1', [id]);
+        const existingEntry = await pool.query('SELECT * FROM "form" WHERE id = $1', [id]);
 
         if (existingEntry.rows.length > 0) {
             return res.status(400).json({ error: 'Data already exists for this user ID' });
         }
         // Insert data into the database
         await pool.query(
-            'INSERT INTO form_data (id, name, value, created_by, status) VALUES ($1, $2, $3, $4, $5)',
-            [id, name, value, created_by, status]
+            'INSERT INTO form (id, form_name, form_value,created_at,created_by, status) VALUES ($1, $2, $3, $4, $5 , $6)',
+            [id, form_name, form_value,created_at,created_by, status]
         );
 
         res.status(201).json({ message: 'Form data submitted successfully' });
