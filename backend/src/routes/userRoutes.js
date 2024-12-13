@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/getuserbyid' , getUserById);
-router.get('/getuserbytoken' , validateToken , getUserDetails);
+router.get('/getuserdetails' , validateToken , getUserDetails);
 router.post('/refresh', refreshToken);
 router.post('/fillform',fillForm);
 module.exports = router;
