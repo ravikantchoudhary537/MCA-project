@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 exports.getListOfForms = async (req, res) => {
     try {
-        const result = await pool.query('SELECT  id, form_name, created_at, created_by, status FROM form');
+        const result = await pool.query('SELECT * FROM form');
         res.status(200).json(result.rows);
     } catch (error) {
         console.error('Error fetching forms:', error.message);
@@ -38,3 +38,28 @@ exports.getsuccessforms = async (req , res) => {
         res.status(500).json({ error: 'Server error' });
     }
 }
+exports.fillForm = async (req, res) => {
+    const { id, name, value, created_by, status } = req.body;
+
+    if (!id || !name || !value || !created_by || !status) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    try {
+        const existingEntry = await pool.query('SELECT * FROM "form_data" WHERE id = $1', [id]);
+
+        if (existingEntry.rows.length > 0) {
+            return res.status(400).json({ error: 'Data already exists for this user ID' });
+        }
+        // Insert data into the database
+        await pool.query(
+            'INSERT INTO form_data (id, name, value, created_by, status) VALUES ($1, $2, $3, $4, $5)',
+            [id, name, value, created_by, status]
+        );
+
+        res.status(201).json({ message: 'Form data submitted successfully' });
+    } catch (error) {
+        console.error('Error inserting form data:', error.message);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
