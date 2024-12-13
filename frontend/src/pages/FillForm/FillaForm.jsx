@@ -1,125 +1,77 @@
-import React, { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select.jsx'; // Correct imports
 
-const FillaForm = () => {
-  // State to store form data and errors
-  const [formData, setFormData] = useState({
-    id: '',
-    name: '',
-    value: '',
-    createdBy: '',
-    status: '', // Ensure the status field is part of the formData
-  });
+import DemoForm from '../Form/DemoForm';
+import NewForm from '../Form/NewForm';
+import DemoForm2 from '../Form/DemoForm2';
 
-  const [errors, setErrors] = useState({}); // State to store validation errors
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
-  // Dynamic field definitions
-  const fields = [
-    { name: 'id', label: 'ID', placeholder: 'Enter ID' },
-    { name: 'name', label: 'Name', placeholder: 'Enter Name' },
-    { name: 'value', label: 'Value', placeholder: 'Enter Value' },
-    { name: 'createdBy', label: 'Created By', placeholder: 'Enter Created By' },
-    { name: 'status', label: 'Status', type: 'select', placeholder: 'Select a Status', options: [
-      { value: 'Active', label: 'Active' },
-      { value: 'Unactive', label: 'Unactive' },
-    ] }
-  ];
 
-  // Handle input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+function FillaForm() {
+  const [selectedForm, setSelectedForm] = useState(null);
+
+  const handleFormChange = (form) => {
+    setSelectedForm(form);
   };
 
-  // Handle select field changes
-  const handleSelectChange = (value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      status: value,
-    }));
-  };
-
-  // Handle form submission
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    // Validation
-    let validationErrors = {};
-    fields.forEach(field => {
-      if (!formData[field.name]) {
-        validationErrors[field.name] = `${field.label} is required`;
-      }
-    });
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      // No validation errors, submit form data
-      console.log(formData);
-      setErrors({}); // Reset errors if form submission is successful
+  const renderForm = () => {
+    switch (selectedForm) {
+      case 'form1':
+        return <Form1 />;
+      case 'form2':
+        return <Form2 />;
+      case 'form3':
+        return <Form3 />;
+      default:
+        return <p>Please select a form</p>;
     }
   };
 
   return (
-    <div className="mx-auto p-4">
-      <form onSubmit={onSubmit}>
-        <div className="grid grid-cols-2 gap-4">
-          {fields.map((field) => (
-            <div key={field.name}>
-              {/* Dynamic Label */}
-              <Label htmlFor={field.name}>{field.label}</Label>
+    
+    <div className="p-4 mb-4 ">
+    <Select onValueChange={handleFormChange} >
+      <SelectTrigger className="w-[150px]" >
+        <SelectValue placeholder="Select a form" />
+     
+        
+      <SelectContent>
+        <SelectItem value="form1">Form 1</SelectItem>
+        <SelectItem value="form2">Form 2</SelectItem>
+        <SelectItem value="form3">Form 3</SelectItem>
+      </SelectContent>
+      </SelectTrigger>
+    </Select>
 
-              {/* Dynamic Input or Select */}
-              {field.type === 'select' ? (
-                <Select
-                  value={formData[field.name]} // Set the selected value
-                  onValueChange={handleSelectChange} // Correct handler for select value change
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={field.placeholder} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {field.options.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={formData[field.name]}
-                  onChange={handleInputChange}
-                  placeholder={field.placeholder}
-                  className="mt-2 block w-full px-4 py-2 rounded-lg"
-                />
-              )}
-
-              {/* Dynamic Error Message */}
-              {errors[field.name] && (
-                <p className="text-blue-500 text-sm">{errors[field.name]}</p>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Submit Button */}
-        <div className="py-5">
-          <Button type="submit" className="px-6 py-4 rounded-lg">
-            Submit
-          </Button>
-        </div>
-      </form>
-    </div>
+    <div className="mt-6">{renderForm()}</div>
+  </div>
   );
-};
+}
+
+function Form1() {
+  return (
+    <DemoForm />
+  );
+}
+
+function Form2() {
+  return (
+    <DemoForm2 />
+  );
+}
+
+function Form3() {
+  return (
+    <NewForm />
+  );
+}
 
 export default FillaForm;
