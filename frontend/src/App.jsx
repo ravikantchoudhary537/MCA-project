@@ -1,44 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-import './css/style.css';
-import './charts/ChartjsConfig';
-
-// Import pages
-import DefaultLayout from './layout/DefaultLayout';
-import Login from './pages/loginPage/Login';
-import Overview from './pages/overview/Overview';
-import FillaForm from './pages/FillForm/FillaForm';
-import Payment from './pages/payment/Payment';
-import Status from './pages/status/Status';
-import Setting from './pages/settings/Setting';
-import Logout from './auth/logout/Logout';
-import SingUp from './pages/signup/SingUp';
-// import ProtectedRoute from './auth/ProtectedRoute';
-import ProtectedRoute from './auth/logout/ProtectedRoute';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./css/style.css";
+import "./charts/ChartjsConfig";
+import DefaultLayout from "./layout/DefaultLayout";
+import Login from "./pages/loginPage/Login";
+import Overview from "./pages/overview/Overview";
+import FillaForm from "./pages/FillForm/FillaForm";
+import Payment from "./pages/payment/Payment";
+import Status from "./pages/status/Status";
+import Setting from "./pages/settings/Setting";
+import Logout from "./auth/logout/Logout";
+import SingUp from "./pages/signup/SingUp";
+import ProtectedRoute from "./auth/logout/ProtectedRoute";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    () => localStorage.getItem('isAuthenticated') === 'true'
-  );
-
-  useEffect(() => {
-    // Persist authentication state in localStorage
-    localStorage.setItem('isAuthenticated', isAuthenticated);
-  }, [isAuthenticated]);
-
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
-        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SingUp />} />
-
-        {/* Protected Routes */}
         <Route
           path="/"
           element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProtectedRoute>
               <DefaultLayout />
             </ProtectedRoute>
           }
@@ -48,10 +32,8 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/status" element={<Status />} />
           <Route path="/settings" element={<Setting />} />
-          <Route path="/logout" element={ <Logout setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/logout" element={<Logout />} />
         </Route>
-
-        {/* Fallback */}
         <Route path="*" element={<h1>404 Page Not Found</h1>} />
       </Routes>
     </BrowserRouter>
