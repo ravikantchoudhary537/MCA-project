@@ -1,24 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa";
-
-const Logout = ({ setIsAuthenticated }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { isAuthenticate } from "@/app/slice/AuthenticateSlice";
+const Logout = () => {
   const navigate = useNavigate();
-
-  // Handle logout logic
+  const dispatch = useDispatch();
   const handleLogout = () => {
-    // Remove tokens and authentication data
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("isAuthenticated");
     sessionStorage.clear();
-
-    // Update authentication state
-    if (setIsAuthenticated) {
-      setIsAuthenticated(false);
-    }
-
-    // Redirect to login page
+    dispatch(isAuthenticate());
     navigate("/login", { replace: true });
   };
 

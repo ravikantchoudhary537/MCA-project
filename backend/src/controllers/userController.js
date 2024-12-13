@@ -150,7 +150,7 @@ exports.getUserDetails = async (req, res) => {
 };
 exports.fillForm = async (req, res) => {
     const { id, name, value, created_by, status } = req.body;
-
+       console.log("Form data backend:", req.body);
     if (!id || !name || !value || !created_by || !status) {
         return res.status(400).json({ error: 'All fields are required' });
     }

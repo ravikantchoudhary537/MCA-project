@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios"; // For API requests
+import axios from "axios";  
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function SignUp() {
     const [formData, setFormData] = useState({
@@ -153,10 +153,18 @@ function SignUp() {
                         ))}
 
                         <div>
-                            <Button type="submit" className="px-8 py-4 rounded-lg">
+                            <Button type="submit" className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
                                 Sign Up
                             </Button>
                         </div>
+    
+                        <NavLink    
+                            to="/login"
+                            className="block text-center mt-4 text-sm text-gray-400 dark:text-gray-200 hover:underline"
+                        >
+                            Already have an account? s
+                            <span className="text-blue-500"> Login</span>
+                        </NavLink>
 
                         {/* Show server response */}
                         {serverResponse && (
