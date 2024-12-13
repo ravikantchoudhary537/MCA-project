@@ -2,7 +2,6 @@ const pool = require('../models/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
 const generateTokens = (userId) => {
     const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET_ACCESS, {
         expiresIn: process.env.JWT_EXPIRATION_ACCESS,
@@ -148,9 +147,9 @@ exports.getUserDetails = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
 exports.fillForm = async (req, res) => {
     const { id, name, value, created_by, status } = req.body;
-       console.log("Form data backend:", req.body);
     if (!id || !name || !value || !created_by || !status) {
         return res.status(400).json({ error: 'All fields are required' });
     }

@@ -5,6 +5,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 
 const formRoutes = require('./routes/formRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 require('dotenv').config();
 
 
@@ -15,6 +16,8 @@ app.use(cors());
 // Routes
 app.use(`${process.env.ROUTE_PATH}/`, userRoutes);
 app.use(`${process.env.ROUTE_PATH}/`, formRoutes);
+app.use(`${process.env.ROUTE_PATH}/`, paymentRoutes);
+
 
 // Start the server
 
