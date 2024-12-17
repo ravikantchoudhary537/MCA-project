@@ -5,6 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { NavLink, useNavigate } from "react-router-dom";
 import { isAuthenticate } from "@/app/slice/AuthenticateSlice";
+import ReCAPTCHA from "react-google-recaptcha";
+
+const recaptchaRef = React.createRef();
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -18,8 +21,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
- const isAuth =useSelector(state=>state.authenticate);
-
+  const isAuth = useSelector((state) => state.authenticate);
 
   const generateCaptcha = () => {
     const randomCaptcha = Math.random()
@@ -32,7 +34,7 @@ const Login = () => {
   useEffect(() => {
     generateCaptcha();
   }, []);
-  
+
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -43,6 +45,12 @@ const Login = () => {
 
   const handleLoginForm = async (e) => {
     e.preventDefault();
+
+    const recaptchaValue = recaptchaRef.current.getValue();
+    if (!recaptchaValue) {
+      setError("Please complete the reCAPTCHA.");
+      return;
+    }
 
     const { email, password, captchaInput } = formData;
     if (!email || !password || !captchaInput) {
@@ -62,14 +70,14 @@ const Login = () => {
       const response = await axios.post("http://localhost:8000/api/mca/login", {
         email,
         password,
+        recaptchaToken: recaptchaValue,  // Sending the reCAPTCHA token
       });
       const { accessToken, refreshToken, message } = response.data;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       navigate("/overview");
       dispatch(isAuthenticate());
-      console.log("login",isAuth);
-
+      console.log("login", isAuth);
     } catch (error) {
       const errorMessage =
         error.response?.data?.error || "An error occurred. Please try again.";
@@ -80,7 +88,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) navigate("/overview"); 
+    if (localStorage.getItem("accessToken")) navigate("/overview");
   }, [navigate]);
 
   return (
@@ -147,7 +155,7 @@ const Login = () => {
                   onChange={handleInputChange}
                   required
                 />
-                <span className="bg-gray-200 px-4 py-2 rounded font-mono text-lg">
+                <span className="bg-gray-800 text-white select-none line-through px-4 py-2 rounded font-mono text-lg">
                   {captcha}
                 </span>
                 <Button
@@ -159,9 +167,13 @@ const Login = () => {
                 </Button>
               </div>
             </div>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey="6LfEBZ0qAAAAAB6gHsqyAEHJNj4Zba_1FALrENL1"
+            />
             <Button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2 px-4 rounded" 
+              className="w-full mt-3 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
               disabled={isLoading}
             >
               {isLoading ? "Logging in..." : "Login"}
@@ -169,7 +181,7 @@ const Login = () => {
           </form>
           <NavLink
             to="/signup"
-            className="block text-center mt-4 text-sm text-gray-400 dark:text-gray-200 hover:underline" 
+            className="block text-center mt-4 text-sm text-gray-400 dark:text-gray-200 hover:underline"
           >
             Don't have an account?
             <span className="text-blue-500"> Register</span>
@@ -177,108 +189,7 @@ const Login = () => {
         </div>
       </div>
     </section>
-    // <>
-    // {
-    //   localStorage.getItem("accessToken") ? (
-    //     navigate("/overview")
-    //   ) : (
-    //     <section className="h-screen">
-    //   <div className="h-full flex items-center justify-center lg:flex-row flex-col">
-    //     <div className="lg:w-6/12 hidden lg:flex">
-    //       <img
-    //         src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-    //         alt="Login Illustration"
-    //         className="w-full"
-    //       />
-    //     </div>
-    //     <div className="w-full max-w-md p-5 lg:w-5/12">
-    //       <h1 className="text-2xl font-bold text-blue-500 text-center mb-4">
-    //         WELCOME TO MCA
-    //       </h1>
-    //       <h2 className="text-xl font-semibold text-center mb-4">Login</h2>
-    //       {error && (
-    //         <p className="text-center text-red-500 text-sm mb-4">{error}</p>
-    //       )}
-    //       <form onSubmit={handleLoginForm}>
-    //         <div className="mb-6">
-    //           <label htmlFor="email" className="block mb-2 text-sm font-medium">
-    //             Email
-    //           </label>
-    //           <Input
-    //             id="email"
-    //             type="email"
-    //             placeholder="Enter your email"
-    //             value={formData.email}
-    //             onChange={handleInputChange}
-    //             required
-    //           />
-    //         </div>
-    //         <div className="mb-6">
-    //           <label
-    //             htmlFor="password"
-    //             className="block mb-2 text-sm font-medium"
-    //           >
-    //             Password
-    //           </label>
-    //           <Input
-    //             id="password"
-    //             type="password"
-    //             placeholder="Enter your password"
-    //             value={formData.password}
-    //             onChange={handleInputChange}
-    //             required
-    //           />
-    //         </div>
-    //         <div className="mb-6">
-    //           <label
-    //             htmlFor="captchaInput"
-    //             className="block mb-2 text-sm font-medium"
-    //           >
-    //             Enter the CAPTCHA
-    //           </label>
-    //           <div className="flex items-center space-x-2">
-    //             <Input
-    //               id="captchaInput"
-    //               type="text"
-    //               placeholder="Enter CAPTCHA"
-    //               value={formData.captchaInput}
-    //               onChange={handleInputChange}
-    //               required
-    //             />
-    //             <span className="bg-gray-200 px-4 py-2 rounded font-mono text-lg">
-    //               {captcha}
-    //             </span>
-    //             <Button
-    //               type="button"
-    //               onClick={generateCaptcha}
-    //               className="text-sm"
-    //             >
-    //               Refresh
-    //             </Button>
-    //           </div>
-    //         </div>
-    //         <Button
-    //           type="submit"
-    //           className="w-full bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2 px-4 rounded" 
-    //           disabled={isLoading}
-    //         >
-    //           {isLoading ? "Logging in..." : "Login"}
-    //         </Button>
-    //       </form>
-    //       <NavLink
-    //         to="/signup"
-    //         className="block text-center mt-4 text-sm text-gray-400 dark:text-gray-200 hover:underline" 
-    //       >
-    //         Don't have an account?
-    //         <span className="text-blue-500"> Register</span>
-    //       </NavLink>
-    //     </div>
-    //   </div>
-    // </section>
-    //   )
-    // }
-    // </>
-  )
-}
+  );
+};
 
 export default Login;

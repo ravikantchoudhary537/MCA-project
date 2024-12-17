@@ -22,7 +22,7 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute >
               <DefaultLayout />
             </ProtectedRoute>
           }

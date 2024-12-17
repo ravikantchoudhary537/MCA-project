@@ -8,7 +8,7 @@ import axios from 'axios';
 const DemoForm = () => {
  
   const [formData, setFormData] = useState({
-    id: 0,
+    id: Number,
     name: '',
     value: '',
     created_by: '',
