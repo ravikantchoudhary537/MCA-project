@@ -151,7 +151,6 @@ const Status = () => {
         </TableBody>
       </Table>
 
-      {/* Pagination Buttons */}
       <div className="flex justify-between mt-4">
         <Button
           variant="outline"

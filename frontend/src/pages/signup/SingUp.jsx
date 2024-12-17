@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";  
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -109,6 +109,10 @@ function SignUp() {
             }
         }
     };
+
+     useEffect(() => {
+        if (localStorage.getItem("accessToken")) Navigate("/overview"); 
+      }, [Navigate]);
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
