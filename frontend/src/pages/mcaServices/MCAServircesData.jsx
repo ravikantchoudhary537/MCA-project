@@ -107,11 +107,11 @@ export const data = [
           },
           {
             service:
-              "Form CHG-8-RD approval for delay in creation / modification / rectification of chargeCompanies)",
+              "Form CHG-8-RD approval for delay in creation / modification / rectification of chargeCompanies",
           },
           {
             service:
-              "Form CHG-6- Intimation of appointment/cessation of receiver / managerector)",
+              "Form CHG-6- Intimation of appointment/cessation of receiver / managerector",
           },
           { service: "Form CHG-4 - Intimation of satisfaction of chargers" },
           {
