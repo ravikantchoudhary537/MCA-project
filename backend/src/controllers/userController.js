@@ -2,11 +2,11 @@ const pool = require('../models/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const generateTokens = (userId) => {
-    const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET_ACCESS, {
+const generateTokens = (userId,userName) => {
+    const accessToken = jwt.sign({ id: userId, name:userName }, process.env.JWT_SECRET_ACCESS, {
         expiresIn: process.env.JWT_EXPIRATION_ACCESS,
     });
-    const refreshToken = jwt.sign({ id: userId }, process.env.JWT_SECRET_REFRESH, {
+    const refreshToken = jwt.sign({ id: userId,name:userName }, process.env.JWT_SECRET_REFRESH, {
         expiresIn: process.env.JWT_EXPIRATION_REFRESH,
     });
     return { accessToken, refreshToken };
@@ -71,7 +71,7 @@ exports.loginUser = async (req, res) => {
         }
 
         // Generate tokens
-        const { accessToken, refreshToken } = generateTokens(user.id);
+        const { accessToken, refreshToken } = generateTokens(user.id,user.name);
 
         res.json({
             message: 'Login successful',
