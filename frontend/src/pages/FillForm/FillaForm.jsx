@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import MCAServices from '../mcaServices/MCAServices';
 
 function FillaForm() {
   const [selectedForm, setSelectedForm] = useState(null);
@@ -38,7 +39,8 @@ function FillaForm() {
   return (
     
     <div className="p-4 mb-4 ">
-    <Select onValueChange={handleFormChange} >
+      <MCAServices />
+    {/* <Select onValueChange={handleFormChange} >
       <SelectTrigger className="w-[150px]" >
         <SelectValue placeholder="Select a form" />
       <SelectContent>
@@ -49,8 +51,8 @@ function FillaForm() {
       </SelectContent>
       </SelectTrigger>
     </Select>
-
-    <div className="mt-6">{renderForm()}</div>
+     
+    <div className="mt-6">{renderForm()}</div> */}
   </div>
   );
 }
