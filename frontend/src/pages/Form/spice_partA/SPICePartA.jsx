@@ -111,11 +111,6 @@ const SPICePartA = () => {
             </SelectContent>
           </Select>
         </div>
-
-        <div className="w-full md:w-[35%]">
-          <NICCodeSearch />
-        </div>
-
         <div className="w-full space-y-4 bg-gray-200 dark:bg-gray-700 p-5 mt-6">
           <div className="flex flex-col md:flex-row space-x-4">
             <div className="flex-1">
@@ -123,10 +118,7 @@ const SPICePartA = () => {
               <Input id="nicCode" name="nicCode" placeholder="Enter Main NIC Code" />
             </div>
 
-            <div className="flex-1">
-              <Label htmlFor="description">*Description of the Main Sub-Class</Label>
-              <textarea id="description" name="description" placeholder="Enter Description" className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" />
-            </div>
+           
           </div>
         </div>
 
