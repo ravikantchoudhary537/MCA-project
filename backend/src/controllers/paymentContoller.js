@@ -1,6 +1,6 @@
 const pool = require('../models/db');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// const bcrypt = require('bcryptjs'); 
+// const jwt = require('jsonwebtoken');
 require('dotenv').config();
 exports.getListOfpayments = async (req, res) => {
     try {
