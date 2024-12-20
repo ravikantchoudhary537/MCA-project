@@ -1,71 +1,115 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { NavLink, useNavigate } from "react-router-dom";
+import { isAuthenticate } from "@/app/slice/AuthenticateSlice";
+import ReCAPTCHA from "react-google-recaptcha";
+
+const recaptchaRef = React.createRef();
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [captchaInput, setCaptchaInput] = useState("");
-  const [generatedCaptcha, setGeneratedCaptcha] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    captchaInput: "",
+  });
+  const [captcha, setCaptcha] = useState("");
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Function to generate a random CAPTCHA
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.authenticate);
+
   const generateCaptcha = () => {
-    const captcha = Math.random().toString(36).substring(2, 8).toUpperCase();
-    setGeneratedCaptcha(captcha);
+    const randomCaptcha = Math.random()
+      .toString(36)
+      .substring(2, 8)
+      .toUpperCase();
+    setCaptcha(randomCaptcha);
   };
 
-  // Initialize CAPTCHA on component mount
   useEffect(() => {
     generateCaptcha();
   }, []);
 
-  // Handle form submission
-  const handleLoginForm = (e) => {
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleLoginForm = async (e) => {
     e.preventDefault();
 
+    const recaptchaValue = recaptchaRef.current.getValue();
+    if (!recaptchaValue) {
+      setError("Please complete the reCAPTCHA.");
+      return;
+    }
+
+    const { email, password, captchaInput } = formData;
     if (!email || !password || !captchaInput) {
-      setError("Please fill in all fields, including the CAPTCHA.");
+      setError("All fields are required, including the CAPTCHA.");
       return;
     }
 
-    if (captchaInput !== generatedCaptcha) {
+    if (captchaInput !== captcha) {
       setError("Invalid CAPTCHA. Please try again.");
+      generateCaptcha();
       return;
     }
 
-    // For demonstration: Check if email/password is admin
-    if (email === "admin@gmail.com" && password === "admin") {
-      window.location.href = "/Dashboard";
-    } else {
-      setError("Invalid email or password.");
+    setError(null);
+    setIsLoading(true);
+    try {
+      const response = await axios.post("http://localhost:8000/api/mca/login", {
+        email,
+        password,
+        recaptchaToken: recaptchaValue,  // Sending the reCAPTCHA token
+      });
+      const { accessToken, refreshToken, message } = response.data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      navigate("/overview");
+      dispatch(isAuthenticate());
+      console.log("login", isAuth);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "An error occurred. Please try again.";
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) navigate("/overview");
+  }, [navigate]);
 
   return (
     <section className="h-screen">
       <div className="h-full flex items-center justify-center lg:flex-row flex-col">
-        {/* Left Image Section */}
-        <div className="lg:flex lg:w-6/12">
+        <div className="lg:w-6/12 hidden lg:flex">
           <img
             src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
             alt="Login Illustration"
             className="w-full"
           />
         </div>
-
-        {/* Login Form Section */}
         <div className="w-full max-w-md p-5 lg:w-5/12">
-          <h1 className="text-2xl font-bold text-blue-500 text-center mb-4">WELCOME TO MCA</h1>
-          <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
-
+          <h1 className="text-2xl font-bold text-blue-500 text-center mb-4">
+            WELCOME TO MCA
+          </h1>
+          <h2 className="text-xl font-semibold text-center mb-4">Login</h2>
           {error && (
             <p className="text-center text-red-500 text-sm mb-4">{error}</p>
           )}
-
           <form onSubmit={handleLoginForm}>
-            {/* Email Input */}
             <div className="mb-6">
               <label htmlFor="email" className="block mb-2 text-sm font-medium">
                 Email
@@ -74,13 +118,11 @@ const Login = () => {
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                value={email}
-                onInput={(e) => setEmail((e.target).value)}
+                value={formData.email}
+                onChange={handleInputChange}
                 required
               />
             </div>
-
-            {/* Password Input */}
             <div className="mb-6">
               <label
                 htmlFor="password"
@@ -92,32 +134,29 @@ const Login = () => {
                 id="password"
                 type="password"
                 placeholder="Enter your password"
-                value={password}
-                onInput={(e) =>
-                  setPassword((e.target).value)
-                }
+                value={formData.password}
+                onChange={handleInputChange}
                 required
               />
             </div>
-
-            {/* CAPTCHA */}
             <div className="mb-6">
-              <label htmlFor="captcha" className="block mb-2 text-sm font-medium">
+              <label
+                htmlFor="captchaInput"
+                className="block mb-2 text-sm font-medium"
+              >
                 Enter the CAPTCHA
               </label>
               <div className="flex items-center space-x-2">
                 <Input
-                  id="captcha"
+                  id="captchaInput"
                   type="text"
                   placeholder="Enter CAPTCHA"
-                  value={captchaInput}
-                  onInput={(e) =>
-                    setCaptchaInput((e.target).value)
-                  }
+                  value={formData.captchaInput}
+                  onChange={handleInputChange}
                   required
                 />
-                <span className="bg-gray-200 px-4 py-2 rounded font-mono text-lg">
-                  {generatedCaptcha}
+                <span className="bg-gray-800 text-white select-none line-through px-4 py-2 rounded font-mono text-lg">
+                  {captcha}
                 </span>
                 <Button
                   type="button"
@@ -128,40 +167,25 @@ const Login = () => {
                 </Button>
               </div>
             </div>
-
-            {/* Login Button */}
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey="6LfEBZ0qAAAAAB6gHsqyAEHJNj4Zba_1FALrENL1"
+            />
             <Button
               type="submit"
-              className="w-full bg-primary text-white"
+              className="w-full mt-3 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
               disabled={isLoading}
             >
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
-
-          {/* Social Login Section (Optional) */}
-          {/* <div className="mt-8 text-center">
-            <p className="text-sm mb-4">Sign in with</p>
-            <div className="flex justify-center space-x-4">
-              <TERipple rippleColor="light">
-                <button
-                  type="button"
-                  className="h-9 w-9 bg-blue-600 rounded-full text-white"
-                >
-                  <i className="fab fa-facebook-f"></i>
-                </button>
-              </TERipple>
-
-              <TERipple rippleColor="light">
-                <button
-                  type="button"
-                  className="h-9 w-9 bg-blue-400 rounded-full text-white"
-                >
-                  <i className="fab fa-twitter"></i>
-                </button>
-              </TERipple>
-            </div>
-          </div> */}
+          <NavLink
+            to="/signup"
+            className="block text-center mt-4 text-sm text-gray-400 dark:text-gray-200 hover:underline"
+          >
+            Don't have an account?
+            <span className="text-blue-500"> Register</span>
+          </NavLink>
         </div>
       </div>
     </section>

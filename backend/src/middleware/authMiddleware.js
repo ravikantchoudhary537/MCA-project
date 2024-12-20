@@ -1,17 +1,23 @@
 const jwt = require('jsonwebtoken');
-
+require('dotenv').config();
 exports.validateToken = (req, res, next) => {
-    const token = req.query.token || req.headers['authorization'];
+    const authHeader = req.headers.authorization;
 
+    if (!authHeader) {
+        return res.status(401).json({ error: 'Authorization header is missing' });
+    }
+
+    const token = authHeader.split(' ')[1]; // Bearer <token>
     if (!token) {
-        return res.status(401).json({ error: 'Access denied. No token provided.' });
+        return res.status(401).json({ error: 'Token is missing' });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // Attach the decoded user info to the request object
-        next(); // Proceed to the next middleware or controller
+        const payload = jwt.verify(token, process.env.JWT_SECRET_ACCESS);
+        req.user = payload; // Attach user payload to request
+        next();
     } catch (error) {
-        return res.status(400).json({ error: 'Invalid token.' });
+        console.error('Token validation error:', error.message);
+        res.status(401).json({ error: 'Invalid or expired token' });
     }
 };
