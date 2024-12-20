@@ -10,6 +10,12 @@ import {
 import { data } from "./MCAServircesData";
 import SPICePartA from "../Form/spice_partA/SPICePartA";
 import DemoForm from "../Form/DemoForm";
+import ChangeNameOfCompany from "../Form/companye-filing/incorporation&changeservice/ChangeNameOfCompany";
+import LLPDetails from "../Form/LLPe-filing/RunLLP/LLPDetails";
+import VerificationofDIN from "../Form/FoServices/VerificationofDIN/VerificationOfDIN";
+import VerificationOfDIN from "../Form/FoServices/VerificationofDIN/VerificationOfDIN";
+import FindLLPIN from "../Form/FoServices/Find LLPIN/FindLLPIN";
+import ServiceRelatedComplaint from "../Form/complaints/serviceRelatedComplaint/ServiceRelatedComplaint";
 const DSCForm = () => {
     return (
       <div>
@@ -44,7 +50,7 @@ const categoryFormMap = {
     "Update DSC": <DSCForm />,
     "View Companies/Director Under Prosecution": <DemoForm /> ,
     "Master Data Services V3": <DemoForm /> ,
-    "RUN-LLP (Reserve Unique Name)": <LLPForm />,
+    "RUN-LLP (Reserve Unique Name)": <LLPDetails />,
     "Fillip Incorporation of LLP": <LLPForm />,
     "Form 3-Information for LLP agreement and changes": <LLPForm />,
     "Form 4-Notice for change in information of partners/designated partners": <LLPForm />,
@@ -63,7 +69,7 @@ const categoryFormMap = {
     "Form 32 - Filing addendum for rectification of defects or incompleteness": <LLPForm />,
     "Form LLP BEN 2 - Return to the Registrar in respect of declaration under section 90": <LLPForm />,
     "Form 4D - Return to the Registrar in respect of declaration of beneficial Interest in contribution received by the LLP": <LLPForm />,
-    "Create Service Related Complaint": <DemoForm />,
+    "Create Service Related Complaint": <ServiceRelatedComplaint />,
     "Track Service Related Complaint": <DemoForm />,
     "Create Investor/Serious Complaint": <DemoForm />,
     "Track Investor/Serious Related Complaint": <DemoForm />,
@@ -88,6 +94,7 @@ const categoryFormMap = {
     "Check Annual Filing Status": <DemoForm /> ,
     "Update Subsidiary details": <DemoForm /> ,
     "Refund - Refund form": <DemoForm /> ,
+    "Verify DIN PAN Details of Director": <VerificationOfDIN />,
 
 
 
@@ -96,9 +103,8 @@ const categoryFormMap = {
     
     "Feedback / Suggestions": <DemoForm />,
     "Incorporation Service": <DemoForm />,
-    "Verify DIN PAN Details of Director": <DemoForm />,
     "Enquire DIN Status": <DemoForm /> ,
-    "Find LLPIN": <DemoForm /> ,
+    "Find LLPIN": <FindLLPIN /> ,
     "Find CIN": <DemoForm /> ,
     
     "Track Payment Status at NTRP": <DemoForm /> ,
@@ -165,7 +171,7 @@ const categoryFormMap = {
   };
 
   const subSubcategoryFormMap = {
-    "RUN - Application for change of name of existing company": <DemoForm /> ,
+    "RUN - Application for change of name of existing company": <ChangeNameOfCompany /> ,
     "SPICE+ Form - Reserve name for new company incorporation": <SPICePartA />,
     "Form DIR-3-KYC - KYC of directors": <DemoForm /> ,
     "Form DIR-3-KYC Web - Verfiy Director's KYC Details": <DemoForm /> ,
@@ -238,16 +244,7 @@ const categoryFormMap = {
     
 
 
-    "Incorporation Service": <DemoForm /> ,
-    "Verify DIN PAN Details of Director": <DemoForm /> ,
-    "Enquire DIN Status": <DemoForm /> ,
-    "Find LLPIN": <DemoForm /> ,
-    "Find CIN": <DemoForm /> ,
-    "Associate DSC": <DemoForm /> ,
-    "Track Payment Status at NTRP": <DemoForm /> ,
-    "Enquire Fees": <DemoForm /> ,
-    "Check Company/LLP Name": <DemoForm /> ,
-    "Authorize / Suspend User": <DemoForm /> ,
+
     "Incorporation Services": <DemoForm /> ,
     "DIN Related Filings": <DemoForm /> ,
     "Charges Related filings": <DemoForm /> ,
@@ -260,15 +257,7 @@ const categoryFormMap = {
     "Approval Services (Registrar of Companies)": <DemoForm /> ,
     "Approval Services (Regional Director)": <DemoForm /> ,
     "Compliance Services": <DemoForm /> ,
-    "Approval Services (Headquarters)": <DemoForm /> ,
-    
-    "IEPF Services": <DemoForm /> ,
-    "Create Service Related Complaint": <DemoForm /> ,
-    "Track Service Related Complaint": <DemoForm /> ,
-    "Create Investor/Serious Complaint": <DemoForm /> ,
-    "Track Investor/Serious Related Complaint": <DemoForm /> ,
-    "Feedback / Suggestions": <DemoForm /> ,
-    
+    "Approval Services (Headquarters)": <DemoForm /> ,    
   };
   
 
