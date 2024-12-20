@@ -65,7 +65,6 @@ export const data = [
   {
     category: "FO Services",
     subcategories: [
-      { service: "Incorporation Service"},
       { service: "Verify DIN PAN Details of Director" },
       { service: "Enquire DIN Status" },
       { service: "Find LLPIN" },

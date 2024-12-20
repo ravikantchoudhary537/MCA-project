@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/select"; 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import NICCodeSearch from "./NICCodeSearch";
 import { Button } from "@/components/ui/button"; 
 const SPICePartA = () => {
   const [firstSelection, setFirstSelection] = useState("");
