@@ -1,4 +1,4 @@
-const pool = require('../models/db.model');
+const pool = require('../models/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -15,7 +15,8 @@ exports.registerUser = async (req, res) => {
     const { name, email, number, password } = req.body;
 
     if (!name || !email || !number || !password) {
-x    }
+        return res.status(400).json({ error: 'All fields are required' });
+    }
 
     try {
         // Check if email exists
