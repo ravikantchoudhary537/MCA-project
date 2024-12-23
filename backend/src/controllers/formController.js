@@ -45,9 +45,8 @@ exports.fillForm = async (req, res) => {
     }
 
     try {
-        // Decode the token to get user details
         const decoded = jwt.verify(token, process.env.JWT_SECRET_ACCESS);
-        const { id: userId, name: userName } = decoded; // Assuming these are in the token
+        const { id: userId, name: userName } = decoded; 
         const { form_name, form_value, status } = req.body;
 
         if (!form_name || !form_value) {
@@ -56,7 +55,6 @@ exports.fillForm = async (req, res) => {
 
         const createdAt = new Date();
 
-        // Step 1: Check if the user has already filled the form
         const existingEntryQuery = `
             SELECT * FROM user_data WHERE user_id = $1 AND form_id IN 
             (SELECT id FROM form WHERE form_name = $2)
@@ -67,7 +65,6 @@ exports.fillForm = async (req, res) => {
             return res.status(400).json({ error: 'You have already submitted this form.' });
         }
 
-        // Step 2: Insert into the `form` table with `user_id`
         const formInsertQuery = `
             INSERT INTO form (form_name, form_value, user_id, created_at, created_by, status) 
             VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
@@ -77,7 +74,6 @@ exports.fillForm = async (req, res) => {
         ]);
         const formId = formInsertResult.rows[0].id;
 
-        // Step 3: Insert into the `user_data` table
         const userDataInsertQuery = `
             INSERT INTO user_data (user_id, user_name, form_id, created_at) 
             VALUES ($1, $2, $3, $4)
