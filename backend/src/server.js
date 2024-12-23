@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
-
+const userdataRoutes = require('./routes/userdataRoutes')
 const formRoutes = require('./routes/formRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 require('dotenv').config();
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(`${process.env.ROUTE_PATH}/`, userRoutes);
 app.use(`${process.env.ROUTE_PATH}/`, formRoutes);
 app.use(`${process.env.ROUTE_PATH}/`, paymentRoutes);
-
+app.use(`${process.env.ROUTE_PATH}/`, userdataRoutes);
 
 // Start the server
 

@@ -2,11 +2,11 @@ const pool = require('../models/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const generateTokens = (userId) => {
-    const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET_ACCESS, {
+const generateTokens = (userId,userName) => {
+    const accessToken = jwt.sign({ id: userId, name:userName }, process.env.JWT_SECRET_ACCESS, {
         expiresIn: process.env.JWT_EXPIRATION_ACCESS,
     });
-    const refreshToken = jwt.sign({ id: userId }, process.env.JWT_SECRET_REFRESH, {
+    const refreshToken = jwt.sign({ id: userId,name:userName }, process.env.JWT_SECRET_REFRESH, {
         expiresIn: process.env.JWT_EXPIRATION_REFRESH,
     });
     return { accessToken, refreshToken };
@@ -71,7 +71,7 @@ exports.loginUser = async (req, res) => {
         }
 
         // Generate tokens
-        const { accessToken, refreshToken } = generateTokens(user.id);
+        const { accessToken, refreshToken } = generateTokens(user.id,user.name);
 
         res.json({
             message: 'Login successful',
@@ -144,31 +144,6 @@ exports.getUserDetails = async (req, res) => {
         res.status(200).json(result.rows[0]);
     } catch (error) {
         console.error('Error fetching user details:', error.message);
-        res.status(500).json({ error: 'Server error' });
-    }
-};
-
-exports.fillForm = async (req, res) => {
-    const { id, name, value, created_by, status } = req.body;
-    if (!id || !name || !value || !created_by || !status) {
-        return res.status(400).json({ error: 'All fields are required' });
-    }
-
-    try {
-        const existingEntry = await pool.query('SELECT * FROM "form_data" WHERE id = $1', [id]);
-
-        if (existingEntry.rows.length > 0) {
-            return res.status(400).json({ error: 'Data already exists for this user ID' });
-        }
-        // Insert data into the database
-        await pool.query(
-            'INSERT INTO form_data (id, name, value, created_by, status) VALUES ($1, $2, $3, $4, $5)',
-            [id, name, value, created_by, status]
-        );
-
-        res.status(201).json({ message: 'Form data submitted successfully' });
-    } catch (error) {
-        console.error('Error inserting form data:', error.message);
         res.status(500).json({ error: 'Server error' });
     }
 };
