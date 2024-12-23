@@ -75,7 +75,7 @@ const ServiceRelatedComplaint = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="p-6">
       <h2 className="text-2xl font-semibold mb-4 text-center">Register Your Complaint with MCA21 Helpdesk</h2>
 
       <form onSubmit={handleSubmit}>

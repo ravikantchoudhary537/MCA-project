@@ -38,15 +38,15 @@ exports.getsuccessforms = async (req , res) => {
         res.status(500).json({ error: 'Server error' });
     }
 }
-
 exports.fillForm = async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
         return res.status(401).json({ error: 'Authorization token is required' });
     }
-    try {   
+
+    try {
         // Decode the token to get user details
-        const decoded = jwt.verify(token,  process.env.JWT_SECRET_ACCESS);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_ACCESS);
         const { id: userId, name: userName } = decoded; // Assuming these are in the token
         const { form_name, form_value, status } = req.body;
 
@@ -54,20 +54,35 @@ exports.fillForm = async (req, res) => {
             return res.status(400).json({ error: 'All fields are required' });
         }
 
-        // Insert into the `form` table
         const createdAt = new Date();
-        const formInsertResult = await pool.query(
-            'INSERT INTO form (form_name, form_value, created_at, created_by, status) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-            [form_name, form_value, createdAt, userName, status]
-        );
 
+        // Step 1: Check if the user has already filled the form
+        const existingEntryQuery = `
+            SELECT * FROM user_data WHERE user_id = $1 AND form_id IN 
+            (SELECT id FROM form WHERE form_name = $2)
+        `;
+        const existingEntry = await pool.query(existingEntryQuery, [userId, form_name]);
+
+        if (existingEntry.rows.length > 0) {
+            return res.status(400).json({ error: 'You have already submitted this form.' });
+        }
+
+        // Step 2: Insert into the `form` table with `user_id`
+        const formInsertQuery = `
+            INSERT INTO form (form_name, form_value, user_id, created_at, created_by, status) 
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+        `;
+        const formInsertResult = await pool.query(formInsertQuery, [
+            form_name, form_value, userId, createdAt, userName, status || 'success'
+        ]);
         const formId = formInsertResult.rows[0].id;
 
-        // Insert into the `user_data` table
-        await pool.query(
-            'INSERT INTO user_data (user_id, user_name, form_id, created_at) VALUES ($1, $2, $3, $4 )',
-            [userId, userName, formId, createdAt]
-        );
+        // Step 3: Insert into the `user_data` table
+        const userDataInsertQuery = `
+            INSERT INTO user_data (user_id, user_name, form_id, created_at) 
+            VALUES ($1, $2, $3, $4)
+        `;
+        await pool.query(userDataInsertQuery, [userId, userName, formId, createdAt]);
 
         res.status(201).json({ message: 'Form data submitted successfully' });
     } catch (error) {
@@ -78,3 +93,4 @@ exports.fillForm = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+

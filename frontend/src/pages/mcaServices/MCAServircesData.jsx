@@ -305,8 +305,19 @@ export const data = [
       { service: "Services" },
       { service: "View Public Documents V2" },
       { service: "Request For Scanned Documents V2" },
-      { service: "View Public Documents V3" },
-      { service: "Get Certified Copies V3" },
+      { service: "View Public Documents V3",
+        subcategories: [
+          {service: "View Public Documents"},
+          {service: "My Cart"},
+          {service: "Workspace"},
+        ]
+       },
+      { service: "Get Certified Copies V3" ,
+        subcategories:[
+          {service: "My Cart GCC"},
+          {service: "My Workspace GCC"},
+        ]
+      },
       { service: "Request For Scanned Documents V3" },
     ],
   },
