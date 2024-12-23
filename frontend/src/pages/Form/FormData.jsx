@@ -376,15 +376,7 @@ export const FormData = {
       },
     ],
   },
-  "Associate DSC": {
-    fields: [
-      {
-        name: "DSC Number",
-        type: "text",
-        placeholder: "Enter DSC Number",
-      },
-    ],
-  },
+  
   "Track Payment Status at NTRP": {
     fields: [
       {
@@ -630,15 +622,7 @@ export const FormData = {
       },
     ],
   },
-  "Enquire Fees": {
-    fields: [
-      {
-        name: "Service Name",
-        type: "text",
-        placeholder: "Enter Service Name",
-      },
-    ],
-  },
+  
   "Pay Later": {
     form: "PaymentForm",
     fields: [
