@@ -1,6 +1,6 @@
 const express = require('express');
-const { getListofalluserdata , getUserDatabyuserid } = require('../controllers/userdataController');
-const { validateToken } = require('../middleware/authMiddleware');
+const { getListofalluserdata , getUserDatabyuserid } = require('../controllers/userdata.Controller');
+const { validateToken } = require('../middleware/auth.Middleware');
 const router = express.Router();
 // Routes
 router.get('/getuserdata' , validateToken, getListofalluserdata);
