@@ -37,21 +37,24 @@ const MCAServices = () => {
 
   const renderForm = () => {
     let formDataToRender = null;
-
+    let formName = "";
     if (selectedCategory) {
       if (
         !selectedCategory.subcategories ||
         selectedCategory.subcategories.length === 0
       ) {
         formDataToRender = FormData[selectedCategory.category];
+        formName = selectedCategory.category;
       } else if (selectedSubcategory) {
         if (
           !selectedSubcategory.subcategories ||
           selectedSubcategory.subcategories.length === 0
         ) {
           formDataToRender = FormData[selectedSubcategory.service];
+          formName = selectedSubcategory.service;
         } else if (selectedSubSubcategory) {
           formDataToRender = FormData[selectedSubSubcategory];
+          formName = selectedSubSubcategory;
         }
       }
     }
@@ -59,7 +62,7 @@ const MCAServices = () => {
     if (formDataToRender) {
       return (
         <div className="form-container">
-          <DefaultLayoutForm formData={formDataToRender} />
+          <DefaultLayoutForm formData={formDataToRender} formName = { formName } />
         </div>
       );
     }
@@ -69,7 +72,7 @@ const MCAServices = () => {
 
   return (
     <>
-      <div className="max-w-5xl mx-auto p-6 bg-gray-400 rounded-lg shadow-md">
+      <div className="max-w-5xl mx-auto p-6 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md">
         <h1 className="text-center text-lg text-gray-700 ">MCA SERVICES</h1>
         <div className="mb-4">
           <label
