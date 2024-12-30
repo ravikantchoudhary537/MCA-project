@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -11,30 +11,36 @@ import {
 import { Button } from "@/components/ui/button";
 
 const Payment = () => {
-  // Sample data (10 rows)
-  const data = [
-    { id: 1, paymentValue: "$100", createdAt: "2024-12-01", createdBy: "User 1", paymentStatus: "Paid" },
-    { id: 2, paymentValue: "$150", createdAt: "2024-12-02", createdBy: "User 2", paymentStatus: "Pending" },
-    { id: 3, paymentValue: "$200", createdAt: "2024-12-03", createdBy: "User 3", paymentStatus: "Paid" },
-    { id: 4, paymentValue: "$50", createdAt: "2024-12-04", createdBy: "User 4", paymentStatus: "Pending" },
-    { id: 5, paymentValue: "$75", createdAt: "2024-12-05", createdBy: "User 5", paymentStatus: "Failed" },
-    { id: 6, paymentValue: "$120", createdAt: "2024-12-06", createdBy: "User 6", paymentStatus: "Paid" },
-    { id: 7, paymentValue: "$180", createdAt: "2024-12-07", createdBy: "User 7", paymentStatus: "Pending" },
-    { id: 8, paymentValue: "$250", createdAt: "2024-12-08", createdBy: "User 8", paymentStatus: "Paid" },
-    { id: 9, paymentValue: "$300", createdAt: "2024-12-09", createdBy: "User 9", paymentStatus: "Pending" },
-    { id: 10, paymentValue: "$400", createdAt: "2024-12-10", createdBy: "User 10", paymentStatus: "Failed" },
-  ];
-
-  // State for pagination
+  const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Calculate paginated data
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/mca//getpaymentlist",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        ); 
+        const result = await response.json();
+        setData(result); 
+      } catch (error) {
+        console.error("Error fetching payment data:", error);
+      }
+    };
+
+    fetchPayments();
+  }, []);
+
+ 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Handle page changes
   const handleNext = () => {
     if (currentPage < Math.ceil(data.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
@@ -64,16 +70,15 @@ const Payment = () => {
           {currentData.map((item) => (
             <TableRow key={item.id}>
               <TableCell className="font-medium">{item.id}</TableCell>
-              <TableCell>{item.paymentValue}</TableCell>
-              <TableCell className="text-right">{item.createdAt}</TableCell>
-              <TableCell className="text-right">{item.createdBy}</TableCell>
-              <TableCell>{item.paymentStatus}</TableCell>
+              <TableCell>{item.payment_value}</TableCell>
+              <TableCell className="text-right">{item.created_at}</TableCell>
+              <TableCell className="text-right">{item.created_by}</TableCell>
+              <TableCell>{item.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
-      {/* Pagination Buttons */}
       <div className="flex justify-between mt-4">
         <Button
           variant="outline"

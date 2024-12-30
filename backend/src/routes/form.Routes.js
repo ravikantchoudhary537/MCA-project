@@ -1,6 +1,6 @@
 const express = require('express');
-const { getListOfForms, getpendingforms, getsuccessforms, getfailureforms, fillForm } = require('../controllers/formController.js');
-const { validateToken } = require('../middleware/authMiddleware');
+const { getListOfForms, getpendingforms, getsuccessforms, getfailureforms, fillForm } = require('../controllers/form.Controller.js');
+const { validateToken } = require('../middleware/auth.Middleware.js');
 
 
 const router = express.Router();
