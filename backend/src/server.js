@@ -2,10 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const userRoutes = require('./routes/userRoutes');
-const userdataRoutes = require('./routes/userdataRoutes')
-const formRoutes = require('./routes/formRoutes');
-const paymentRoutes = require('./routes/paymentRoutes');
+const userRoutes = require('./routes/user.Routes');
+const userdataRoutes = require('./routes/userdata.Routes')
+const formRoutes = require('./routes/form.Routes');
+const paymentRoutes = require('./routes/payment.Routes');
 require('dotenv').config();
 
 

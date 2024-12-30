@@ -146,13 +146,8 @@ export const FormData = {
     fields : [
         {
           name: "Purpose of Filing",
-          type: "radio",
-          options: [
-            { label: "New Incorporation", value: "new-incorporation" },
-            { label: "Conversion of Firm into LLP", value: "conversion-firm" },
-            { label: "Conversion of Private Company into LLP", value: "conversion-private" },
-            { label: "Change of Existing LLP", value: "change-existing" },
-          ],
+          type: "select",
+          options: ["New Incorporation", "Conversion of Firm into LLP", "Conversion of Private Company into LLP", "Change of Existing LLP"],
           placeholder: "",
         },
         {
@@ -413,11 +408,8 @@ export const FormData = {
     fields : [
         {
           name: "Search Type",
-          type: "radio",
-          options: [
-            { label: "Search Based on Existing Company/LLP Name", value: "existing" },
-            { label: "Search Based on Old Company/LLP Name", value: "old" },
-          ],
+          type: "select",
+          options: [ "Search Based on Existing Company/LLP Name", "Search Based on Old Company/LLP Name"],
         },
         {
           name: "Company/LLP Name",
@@ -451,15 +443,6 @@ export const FormData = {
         name: "CIN",
         type: "text",
         placeholder: "Enter CIN",
-      },
-    ],
-  },
-  "Associate DSC": {
-    fields: [
-      {
-        name: "DSC Number",
-        type: "text",
-        placeholder: "Enter DSC Number",
       },
     ],
   },
@@ -505,46 +488,37 @@ export const FormData = {
     ],
   },
   "Create Service Related Complaint": {
-    form: "ComplaintForm",
     fields: [
       {
         name: "Name of Person",
         type: "text",
         placeholder: "Enter your name",
-        required: true,
       },
       {
         name: "Country",
         type: "text",
         placeholder: "Enter your country",
-        required: true,
-        disabled: true,
       },
       {
         name: "City",
         type: "text",
         placeholder: "Enter your city",
-        required: true,
       },
       {
         name: "Mobile Number",
         type: "text",
         placeholder: "Please Enter 10 digit mobile number",
-        required: true,
-        pattern: "^d{10}$",
       },
       {
         name: "Email ID",
         type: "email",
         placeholder: "Enter your email ID",
-        required: true,
       },
       {
         name: "Type",
         type: "select",
         options: ["Issue with eform", "Other"],
         placeholder: "Select the issue type",
-        required: true,
       },
       {
         name: "Severity",
@@ -562,7 +536,6 @@ export const FormData = {
         name: "Description of Problem",
         type: "textarea",
         placeholder: "Describe your problem",
-        required: true,
       },
       {
         name: "Supporting Documents",
@@ -598,13 +571,11 @@ export const FormData = {
         name: "SRN Number (if not applicable enter NA)",
         type: "text",
         placeholder: "Enter SRN Number",
-        required: true,
       },
       {
         name: "Others",
         type: "textarea",
         placeholder: "Please copy and paste exact error",
-        required: true,
       },
       {
         name: "Logged Date & Time",
@@ -705,15 +676,6 @@ export const FormData = {
         name: "Document ID",
         type: "text",
         placeholder: "Enter Document ID",
-      },
-    ],
-  },
-  "Enquire Fees": {
-    fields: [
-      {
-        name: "Service Name",
-        type: "text",
-        placeholder: "Enter Service Name",
       },
     ],
   },

@@ -1,10 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+
+
+
 
 const DefaultLayout = () => {
+   const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    // const isTokenExpired = () => {
+    //   const expirationTime = localStorage.getItem("tokenExpirationTime");
+    //   const currentTime = new Date().getTime();
+    
+    //   return !expirationTime || currentTime > expirationTime;
+    // };
+
+    // useEffect(() => {
+    //   if (isTokenExpired()) {
+    //     localStorage.removeItem("accessToken");
+    //     localStorage.removeItem("tokenExpirationTime");
+    //     alert("Session has expired. Please log in again.");
+    //     navigate("/login"); 
+    //   }
+    // }, [navigate]); 
+
+
   return (
     <div className="flex h-screen overflow-hidden">
     <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />

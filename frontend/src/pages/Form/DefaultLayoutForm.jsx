@@ -1,14 +1,26 @@
 import React, { useState } from "react";
-
+import axios from "axios";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 const DefaultLayoutForm = ({ formData, formName }) => {
   const [formFields, setFormFields] = useState(
     formData.fields.reduce((acc, field) => {
-      acc[field.name] = field.type === "radio" ? "" : ""; 
+      const fieldName = field.name.toLowerCase().replace(/\s+/g, "_");
+      acc[fieldName] = field.type === "radio" ? "" : "";
       return acc;
     }, {})
   );
 
-  const  handleInputChange = (event) => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormFields((prevFields) => ({
       ...prevFields,
@@ -16,101 +28,149 @@ const DefaultLayoutForm = ({ formData, formName }) => {
     }));
   };
 
+  // const handleInputChange = (fieldName, value) => {
+  // setFormFields((prevFields) => ({
+  //   ...prevFields,
+  //   [fieldName]: value,
+  // }));
+  // };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formValue = JSON.stringify(formFields); 
-
+    let formValue = JSON.stringify(formFields);
     try {
-      const response = await fetch('http://localhost:8000/api/mca/fillform', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        "http://localhost:8000/api/mca/fillform",
+        {
           form_name: formName,
           form_value: formValue,
-          status: "success", 
-        }),
-      });
+          status: "success",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (response.status === 201) {
         alert("Form submitted successfully!");
+        setFormFields(
+          formData.fields.reduce((acc, field) => {
+            const fieldName = field.name.toLowerCase().replace(/\s+/g, "_");
+            acc[fieldName] = field.type === "radio" ? "" : "";
+            return acc;
+          }, {})
+        );
+        setFormFields({});
       } else {
-        alert(`Error: ${data.error}`);
+        alert(`Error: ${response.data.error || "Something went wrong!"}`);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Something went wrong!");
+
+      if (error.response) {
+        if (error.response.status === 401) {
+          alert("Unauthorized. Please log in again!");
+        } else if (error.response.status === 400) {
+          alert(`Error: ${error.response.data.error || "Bad request."}`);
+        } else {
+          alert(
+            `Error: ${error.response.data.error || "Something went wrong!"}`
+          );
+        }
+      } else {
+        alert("An unexpected error occurred. Please try again!");
+      }
     }
   };
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
       {formData.fields.map((field, index) => {
-        if (field.type === "text" || field.type === "email" || field.type === "number") {
+        const transformedFieldName = field.name
+          .toLowerCase()
+          .replace(/\s+/g, "_");
+
+        if (
+          field.type === "text" ||
+          field.type === "email" ||
+          field.type === "number"
+        ) {
           return (
             <div key={index}>
-              <label className="block text-lg font-semibold mb-2">{field.name}</label>
-              <input
+              <Label className="block text-lg font-semibold mb-2">
+                {field.name}
+              </Label>
+              <Input
                 type={field.type}
-                name={field.name}
+                name={transformedFieldName}
                 placeholder={field.placeholder}
-                value={formFields[field.name] || ''}
+                value={formFields[transformedFieldName] || ""}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           );
         } else if (field.type === "select") {
           return (
             <div key={index}>
-              <label className="block text-lg font-semibold mb-2">{field.name}</label>
-              <select
-                name={field.name}
-                value={formFields[field.name] || ''}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {field.options.map((option, idx) => (
-                  <option key={idx} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+              <Label className="">{field.name}</Label>
+              <Select
+            value={formFields[transformedFieldName] || ""}
+            onValueChange={(value) =>
+              setFormFields((prevFields) => ({
+                ...prevFields,
+                [transformedFieldName]: value, 
+              }))
+            }
+          >
+                <SelectTrigger className="">
+                  <SelectValue placeholder="Select an option" />
+                </SelectTrigger>
+                <SelectContent>
+                  {field.options.map((option, idx) => (
+                    <SelectItem key={idx} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           );
         } else if (field.type === "radio") {
           return (
             <div key={index}>
-              <label className="block text-lg font-semibold mb-2">{field.name}</label>
-              <div className="flex space-x-4">
-                {field.options.map((option, idx) => (
-                  <label key={idx} className="inline-flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name={field.name}
-                      value={option.value}
-                      checked={formFields[field.name] === option.value}
-                      onChange={handleInputChange}
-                      className="form-radio text-blue-500"
-                    />
-                    <span>{option.label}</span>
-                  </label>
-                ))}
-              </div>
+              <RadioGroup defaultValue="option-one">
+                <Label className="">{field.name}</Label>
+                <div className="">
+                  {field.options.map((option, idx) => (
+                    <div key={idx} className="">
+                      <RadioGroupItem
+                        value={option.value}
+                        id={option.value}
+                        checked={
+                          formFields[transformedFieldName] === option.value
+                        }
+                        
+                      />
+                      <Label htmlFor={option.value}>{option.label}</Label>
+                    </div>
+                  ))}
+                </div>
+              </RadioGroup>
             </div>
           );
         } else if (field.type === "file") {
           return (
             <div key={index}>
-              <label className="block text-lg font-semibold mb-2">{field.name}</label>
+              <Label className="block text-lg font-semibold mb-2">
+                {field.name}
+              </Label>
               <input
                 type="file"
-                name={field.name}
+                name={transformedFieldName}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -119,117 +179,14 @@ const DefaultLayoutForm = ({ formData, formName }) => {
         }
         return null;
       })}
-      <button
+      <Button
         type="submit"
-        className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded-md focus:outline-none"
+        className="mt-4 w-full px-4 py-2 rounded-md focus:outline-none"
       >
         Submit
-      </button>
+      </Button>
     </form>
   );
 };
 
 export default DefaultLayoutForm;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from "react";
-
-// const DefaultLayoutForm = ({ formData, formName }) => {
-//   return (
-//     <form className="space-y-4" >
-//     {formData.fields.map((field, index) => {
-//       if (field.type === "text" || field.type === "email" || field.type === "number") {
-//         return (
-//           <div key={index}>
-//             <label className="block text-lg font-semibold mb-2">{field.name}</label>
-//             <input
-//               type={field.type}
-//               name={field.name}
-//               placeholder={field.placeholder}
-//               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             />
-//           </div>
-//         );
-//       } else if (field.type === "select") {
-//         return (
-//           <div key={index}>
-//             <label className="block text-lg font-semibold mb-2">{field.name}</label>
-//             <select
-//               name={field.name}
-//               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             >
-//               {field.options.map((option, idx) => (
-//                 <option key={idx} value={option.value}>
-//                   {option.label}
-//                 </option>
-//               ))}
-//             </select>
-//           </div>
-//         );
-//       } else if (field.type === "radio") {
-//         return (
-//           <div key={index}>
-//             <label className="block text-lg font-semibold mb-2">{field.name}</label>
-//             <div className="flex space-x-4">
-//               {field.options.map((option, idx) => (
-//                 <label key={idx} className="inline-flex items-center space-x-2">
-//                   <input
-//                     type="radio"
-//                     name={field.name}
-//                     value={option.value}
-//                     className="form-radio text-blue-500"
-//                   />
-//                   <span>{option.label}</span>
-//                 </label>
-//               ))}
-//             </div>
-//           </div>
-//         );
-//       } else if (field.type === "file") {
-//         return (
-//           <div key={index}>
-//             <label className="block text-lg font-semibold mb-2">{field.name}</label>
-//             <input
-//               type="file"
-//               name={field.name}
-//               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             />
-//           </div>    
-//         );
-//       }
-//       return null;
-//     })}
-//     <button
-//       type="submit"
-//       className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded-md focus:outline-none"
-//     >
-//       Submit
-//     </button>
-//   </form>
-//   );
-// };
-
-// export default DefaultLayoutForm;
