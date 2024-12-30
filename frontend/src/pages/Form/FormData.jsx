@@ -143,13 +143,59 @@ export const FormData = {
   },
   "RUN-LLP (Reserve Unique Name)": {
     form: "LLPDetails",
-    fields: [
-      {
-        name: "LLP Name",
-        type: "text",
-        placeholder: "Enter LLP Name",
-      },
-    ],
+    fields : [
+        {
+          name: "Purpose of Filing",
+          type: "select",
+          options: ["New Incorporation", "Conversion of Firm into LLP", "Conversion of Private Company into LLP", "Change of Existing LLP"],
+          placeholder: "",
+        },
+        {
+          name: "2(a) CIN",
+          type: "text",
+          placeholder: "Enter CIN",
+        },
+        {
+          name: "2(b) LLPIN",
+          type: "text",
+          placeholder: "Enter LLPIN",
+        },
+        {
+          name: "NIC Code",
+          type: "number",
+          placeholder: "Enter NIC Code",
+        },
+        {
+          name: "3(a) Main NIC code (sub-class)",
+          type: "text",
+          placeholder: "Enter Main NIC Code",
+        },
+        {
+          name: "3(b) Description of the main sub-class",
+          type: "text",
+          placeholder: "Enter Description",
+        },
+        {
+          name: "4(a) Proposed Name 1",
+          type: "text",
+          placeholder: "Enter Proposed Name 1",
+        },
+        {
+          name: "4(b) Proposed Name 2",
+          type: "text",
+          placeholder: "Enter Proposed Name 2",
+        },
+        {
+          name: "LLP/Company Name to find LLPIN/CIN",
+          type: "text",
+          placeholder: "Enter LLP/Company Name",
+        },
+        {
+          name: "Attachment",
+          type: "file",
+          placeholder: "Upload Attachment",
+        },
+      ],      
   },
   "Fillip Incorporation of LLP": {
     form: "LLPForm",
@@ -359,13 +405,37 @@ export const FormData = {
     ],
   },
   "Find LLPIN": {
-    fields: [
-      {
-        name: "LLPIN",
-        type: "text",
-        placeholder: "Enter LLPIN",
-      },
-    ],
+    fields : [
+        {
+          name: "Search Type",
+          type: "select",
+          options: [ "Search Based on Existing Company/LLP Name", "Search Based on Old Company/LLP Name"],
+        },
+        {
+          name: "Company/LLP Name",
+          type: "text",
+          placeholder: "Enter your Company/LLP Name",
+          condition: "existing", 
+        },
+        {
+          name: "Existing Name",
+          type: "text",
+          placeholder: "Enter Existing Name",
+          condition: "existing",
+        },
+        {
+          name: "Old Company/LLP Name",
+          type: "text",
+          placeholder: "Enter Old Company/LLP Name",
+          condition: "old", 
+        },
+        {
+          name: "Old Name",
+          type: "text",
+          placeholder: "Enter Old Name",
+          condition: "old", 
+        },
+      ],
   },
   "Find CIN": {
     fields: [
@@ -373,15 +443,6 @@ export const FormData = {
         name: "CIN",
         type: "text",
         placeholder: "Enter CIN",
-      },
-    ],
-  },
-  "Associate DSC": {
-    fields: [
-      {
-        name: "DSC Number",
-        type: "text",
-        placeholder: "Enter DSC Number",
       },
     ],
   },
@@ -427,113 +488,101 @@ export const FormData = {
     ],
   },
   "Create Service Related Complaint": {
-    form: "ComplaintForm",
     fields: [
-        {
-          name: "Name of Person",
-          type: "text",
-          placeholder: "Enter your name",
-          required: true
-        },
-        {
-          name: "Country",
-          type: "text",
-          placeholder: "Enter your country",
-          required: true,
-          disabled: true
-        },
-        {
-          name: "City",
-          type: "text",
-          placeholder: "Enter your city",
-          required: true
-        },
-        {
-          name: "Mobile Number",
-          type: "text",
-          placeholder: "Please Enter 10 digit mobile number",
-          required: true,
-          pattern: "^\d{10}$"
-        },
-        {
-          name: "Email ID",
-          type: "email",
-          placeholder: "Enter your email ID",
-          required: true
-        },
-        {
-          name: "Type",
-          type: "select",
-          options: ["Issue with eform", "Other"],
-          placeholder: "Select the issue type",
-          required: true
-        },
-        {
-          name: "Severity",
-          type: "select",
-          options: ["Medium", "High", "Low"],
-          placeholder: "Select the severity"
-        },
-        {
-          name: "For MCA Offices",
-          type: "select",
-          options: ["Yes", "No"],
-          placeholder: "Select if applicable"
-        },
-        {
-          name: "Description of Problem",
-          type: "textarea",
-          placeholder: "Describe your problem",
-          required: true
-        },
-        {
-          name: "Supporting Documents",
-          type: "file",
-          placeholder: "Upload supporting documents (if any)"
-        },
-        {
-          name: "Company Name",
-          type: "text",
-          placeholder: "Enter your company name"
-        },
-        {
-          name: "CIN / LLPIN",
-          type: "text",
-          placeholder: "Enter your CIN/LLPIN"
-        },
-        {
-          name: "DIN Number (if Applicable)",
-          type: "text",
-          placeholder: "Enter your DIN number"
-        },
-        {
-          name: "PAN",
-          type: "text",
-          placeholder: "Enter your PAN"
-        },
-        {
-          name: "User ID",
-          type: "text",
-          placeholder: "Enter your user ID"
-        },
-        {
-          name: "SRN Number (if not applicable enter NA)",
-          type: "text",
-          placeholder: "Enter SRN Number",
-          required: true
-        },
-        {
-          name: "Others",
-          type: "textarea",
-          placeholder: "Please copy and paste exact error",
-          required: true
-        },
-        {
-          name: "Logged Date & Time",
-          type: "datetime-local",
-          placeholder: "Select the date and time"
-        }
-      ], 
+      {
+        name: "Name of Person",
+        type: "text",
+        placeholder: "Enter your name",
+      },
+      {
+        name: "Country",
+        type: "text",
+        placeholder: "Enter your country",
+      },
+      {
+        name: "City",
+        type: "text",
+        placeholder: "Enter your city",
+      },
+      {
+        name: "Mobile Number",
+        type: "text",
+        placeholder: "Please Enter 10 digit mobile number",
+      },
+      {
+        name: "Email ID",
+        type: "email",
+        placeholder: "Enter your email ID",
+      },
+      {
+        name: "Type",
+        type: "select",
+        options: ["Issue with eform", "Other"],
+        placeholder: "Select the issue type",
+      },
+      {
+        name: "Severity",
+        type: "select",
+        options: ["Medium", "High", "Low"],
+        placeholder: "Select the severity",
+      },
+      {
+        name: "For MCA Offices",
+        type: "select",
+        options: ["Yes", "No"],
+        placeholder: "Select if applicable",
+      },
+      {
+        name: "Description of Problem",
+        type: "textarea",
+        placeholder: "Describe your problem",
+      },
+      {
+        name: "Supporting Documents",
+        type: "file",
+        placeholder: "Upload supporting documents (if any)",
+      },
+      {
+        name: "Company Name",
+        type: "text",
+        placeholder: "Enter your company name",
+      },
+      {
+        name: "CIN / LLPIN",
+        type: "text",
+        placeholder: "Enter your CIN/LLPIN",
+      },
+      {
+        name: "DIN Number (if Applicable)",
+        type: "text",
+        placeholder: "Enter your DIN number",
+      },
+      {
+        name: "PAN",
+        type: "text",
+        placeholder: "Enter your PAN",
+      },
+      {
+        name: "User ID",
+        type: "text",
+        placeholder: "Enter your user ID",
+      },
+      {
+        name: "SRN Number (if not applicable enter NA)",
+        type: "text",
+        placeholder: "Enter SRN Number",
+      },
+      {
+        name: "Others",
+        type: "textarea",
+        placeholder: "Please copy and paste exact error",
+      },
+      {
+        name: "Logged Date & Time",
+        type: "datetime-local",
+        placeholder: "Select the date and time",
+      },
+    ],
   },
   "Track Service Related Complaint": {
     form: "ComplaintForm",
@@ -630,15 +679,6 @@ export const FormData = {
       },
     ],
   },
-  "Enquire Fees": {
-    fields: [
-      {
-        name: "Service Name",
-        type: "text",
-        placeholder: "Enter Service Name",
-      },
-    ],
-  },
   "Pay Later": {
     form: "PaymentForm",
     fields: [
@@ -730,23 +770,146 @@ export const FormData = {
   },
   "RUN - Application for change of name of existing company": {
     form: "RUNForm",
-    fields: [
-      {
-        name: "New Name",
-        type: "text",
-        placeholder: "Enter New Name",
-      },
-    ],
+    fields : [
+        {
+          name: "CIN",
+          type: "text",
+          placeholder: "Enter your CIN",
+          required: true
+        },
+        {
+          name: "Proposed Name 1",
+          type: "text",
+          placeholder: "Enter Proposed Name 1",
+          required: true
+        },
+        {
+          name: "Proposed Name 2",
+          type: "text",
+          placeholder: "Enter Proposed Name 2",
+          required: true
+        },
+        {
+          name: "Comments",
+          type: "textarea",
+          placeholder: "Enter your comments",
+          required: true
+        },
+        {
+          name: "Optional Attachment(s)",
+          type: "file",
+          placeholder: "Upload any optional attachment(s)"
+        }
+      ]
   },
   "SPICE+ Form - Reserve name for new company incorporation": {
     form: "SPICEForm",
-    fields: [
-      {
-        name: "Company Name",
-        type: "text",
-        placeholder: "Enter Company Name",
-      },
-    ],
+    fields : [
+        {
+          name: "Type of Company",
+          type: "select",
+          options: [
+            "Producer Company",
+            "Unlimited Company",
+            "Private Company",
+            "IFSC Company",
+            "Section 8 Company",
+            "Nidhi Company",
+            "New Company(Other)",
+            "Part 1 Section 8 Company",
+            "Part 1 LLP to Company",
+            "Part 1 Firm Company",
+            "Part 1 Other"
+          ],
+          placeholder: "Select Type of Company",
+          required: true
+        },
+        {
+          name: "Class of Company",
+          type: "select",
+          options: ["Public", "Private"],
+          placeholder: "Select Class of Company",
+          required: true
+        },
+        {
+          name: "Category of Company",
+          type: "select",
+          options: ["Option X", "Option Y", "Option Z"],
+          placeholder: "Select Category of Company",
+          required: true
+        },
+        {
+          name: "Sub Category of Company",
+          type: "select",
+          options: ["Option Alpha", "Option Beta", "Option Gamma"],
+          placeholder: "Select Sub Category of Company"
+        },
+        {
+          name: "Main NIC Code",
+          type: "text",
+          placeholder: "Enter Main NIC Code",
+          required: true
+        },
+        {
+          name: "Particulars of the proposed or approved name - 1",
+          type: "text",
+          placeholder: "Enter Here",
+          required: true
+        },
+        {
+          name: "Particulars of the proposed or approved name - 2",
+          type: "text",
+          placeholder: "Enter Here",
+          required: true
+        },
+        {
+          name: "Optional attachment(s) - if any",
+          type: "file",
+          placeholder: "Upload any optional attachments"
+        },
+        {
+          name: "Company Name",
+          type: "text",
+          placeholder: "Enter your company name"
+        },
+        {
+          name: "CIN / LLPIN",
+          type: "text",
+          placeholder: "Enter your CIN/LLPIN"
+        },
+        {
+          name: "DIN Number (if Applicable)",
+          type: "text",
+          placeholder: "Enter your DIN number"
+        },
+        {
+          name: "PAN",
+          type: "text",
+          placeholder: "Enter your PAN"
+        },
+        {
+          name: "User ID",
+          type: "text",
+          placeholder: "Enter your user ID"
+        },
+        {
+          name: "SRN Number (if not applicable enter NA)",
+          type: "text",
+          placeholder: "Enter SRN Number",
+          required: true
+        },
+        {
+          name: "Others",
+          type: "textarea",
+          placeholder: "Please copy and paste exact error",
+          required: true
+        },
+        {
+          name: "Logged Date & Time",
+          type: "datetime-local",
+          placeholder: "Select the date and time"
+        }
+      ],
   },
   "INC-4 - One Person Company - Change in Member/ Nominee": {
     form: "OPOCForm",

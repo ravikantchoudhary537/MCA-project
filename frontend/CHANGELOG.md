@@ -1,4 +1,4 @@
-# CHANGELOG.md
+<!-- # CHANGELOG.md
 
 ## [3.0.0] - 2024-07-05
 
@@ -70,4 +70,4 @@
 
 ## [1.0.0] - 2021-04-20
 
-First release
+First release -->

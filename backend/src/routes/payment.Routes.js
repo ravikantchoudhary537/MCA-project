@@ -1,6 +1,6 @@
 const express = require('express');
-const { getListOfpayments , getListOfpendingpayments , getListOffailedpayments , getListOfsuccesspayments} = require('../controllers/paymentContoller');
-const { validateToken } = require('../middleware/authMiddleware');
+const { getListOfpayments , getListOfpendingpayments , getListOffailedpayments , getListOfsuccesspayments} = require('../controllers/payment.Controller');
+const { validateToken } = require('../middleware/auth.Middleware');
 const router = express.Router();
 // Routes
 router.get('/getpaymentlist' , validateToken, getListOfpayments);
