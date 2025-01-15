@@ -70,14 +70,16 @@ const Login = () => {
       const response = await axios.post("http://localhost:8000/api/mca/login", {
         email,
         password,
-        recaptchaToken: recaptchaValue,  // Sending the reCAPTCHA token
+        recaptchaToken: recaptchaValue, // Sending the reCAPTCHA token
       });
       const { accessToken, refreshToken, message } = response.data;
+      const expirationTime = new Date().getTime() + 900 * 1000;
+      localStorage.setItem("tokenExpirationTime", expirationTime);
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       navigate("/overview");
       dispatch(isAuthenticate());
-      console.log("login", isAuth);
+      // console.log("login", isAuth);
     } catch (error) {
       const errorMessage =
         error.response?.data?.error || "An error occurred. Please try again.";

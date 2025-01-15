@@ -1,5 +1,8 @@
 export const data = [
   {
+    category: "SPICe + Part B",
+  },
+  {
     category: "DSC Services (Related to V2 DSC Association)",
     subcategories: [
       { service: "Acquire DSC" },
@@ -76,7 +79,7 @@ export const data = [
       { service: "Authorize / Suspend User" },
     ],
   },
-  {
+  { 
     category: "Company e-Filing",
     subcategories: [
       {
@@ -191,6 +194,7 @@ export const data = [
         ],
       },
       {
+        
         service: "Approval Services (Registrar of Companies)",
         subcategories: [
           { service: "Form MSC-4 - Application for obtaining active status" },
@@ -287,6 +291,7 @@ export const data = [
       },
     ],
   },
+  
   {
     category: "Complaints",
     subcategories: [
