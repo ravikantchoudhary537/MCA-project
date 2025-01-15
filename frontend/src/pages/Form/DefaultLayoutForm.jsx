@@ -88,97 +88,105 @@ const DefaultLayoutForm = ({ formData, formName }) => {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      {formData.fields.map((field, index) => {
-        const transformedFieldName = field.name
-          .toLowerCase()
-          .replace(/\s+/g, "_");
+    <form onSubmit={handleSubmit}>
+      <div className="space-y-4 " > 
+        {formData.fields.map((field, index) => {
+          const transformedFieldName = field.name
+            .toLowerCase()
+            .replace(/\s+/g, "_");
 
-        if (
-          field.type === "text" ||
-          field.type === "email" ||
-          field.type === "number"
-        ) {
-          return (
-            <div key={index}>
-              <Label className="block text-lg font-semibold mb-2">
-                {field.name}
-              </Label>
-              <Input
-                type={field.type}
-                name={transformedFieldName}
-                placeholder={field.placeholder}
-                value={formFields[transformedFieldName] || ""}
-                onChange={handleInputChange}
-              />
-            </div>
-          );
-        } else if (field.type === "select") {
-          return (
-            <div key={index}>
-              <Label className="">{field.name}</Label>
-              <Select
-            value={formFields[transformedFieldName] || ""}
-            onValueChange={(value) =>
-              setFormFields((prevFields) => ({
-                ...prevFields,
-                [transformedFieldName]: value, 
-              }))
-            }
-          >
-                <SelectTrigger className="">
-                  <SelectValue placeholder="Select an option" />
-                </SelectTrigger>
-                <SelectContent>
-                  {field.options.map((option, idx) => (
-                    <SelectItem key={idx} value={option}>
-                      {option}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          );
-        } else if (field.type === "radio") {
-          return (
-            <div key={index}>
-              <RadioGroup defaultValue="option-one">
+          if (
+            field.type === "text" ||
+            field.type === "email" ||
+            field.type === "number" ||
+            field.type === "textarea" ||
+            field.type === "date" ||
+            field.type === "password" ||
+            field.type === "url" ||
+            field.type === "checkbox"
+
+          ) {
+            return (
+              <div key={index}>
+                <Label className="block text-sm font-semibold mb-2">
+                  {field.name}
+                </Label>
+                <Input
+                  type={field.type}
+                  name={transformedFieldName}
+                  placeholder={field.placeholder}
+                  value={formFields[transformedFieldName] || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+            );
+          } else if (field.type === "select") {
+            return (
+              <div key={index}>
                 <Label className="">{field.name}</Label>
-                <div className="">
-                  {field.options.map((option, idx) => (
-                    <div key={idx} className="">
-                      <RadioGroupItem
-                        value={option.value}
-                        id={option.value}
-                        checked={
-                          formFields[transformedFieldName] === option.value
-                        }
-                        
-                      />
-                      <Label htmlFor={option.value}>{option.label}</Label>
-                    </div>
-                  ))}
-                </div>
-              </RadioGroup>
-            </div>
-          );
-        } else if (field.type === "file") {
-          return (
-            <div key={index}>
-              <Label className="block text-lg font-semibold mb-2">
-                {field.name}
-              </Label>
-              <input
-                type="file"
-                name={transformedFieldName}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          );
-        }
-        return null;
-      })}
+                <Select
+                  value={formFields[transformedFieldName] || ""}
+                  onValueChange={(value) =>
+                    setFormFields((prevFields) => ({
+                      ...prevFields,
+                      [transformedFieldName]: value,
+                    }))
+                  }
+                >
+                  <SelectTrigger className="">
+                    <SelectValue placeholder="Select an option" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {field.options.map((option, idx) => (
+                      <SelectItem key={idx} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            );
+          } else if (field.type === "radio") {
+            return (
+              <div key={index}>
+                <RadioGroup defaultValue="option-one">
+                  <Label className="">{field.name}</Label>
+                  <div className="">
+                    {field.options.map((option, idx) => (
+                      <div key={idx} className="">
+                        <RadioGroupItem
+                          value={option.value}
+                          id={option.value}
+                          checked={
+                            formFields[transformedFieldName] === option.value
+                          }
+
+                        />
+                        <Label htmlFor={option.value}>{option.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </RadioGroup>
+              </div>
+            );
+          } else if (field.type === "file") {
+            return (
+              <div key={index}>
+                <Label className="block text-lg font-semibold mb-2">
+                  {field.name}
+                </Label>
+                <input
+                  type="file"
+                  name={transformedFieldName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
       <Button
         type="submit"
         className="mt-4 w-full px-4 py-2 rounded-md focus:outline-none"

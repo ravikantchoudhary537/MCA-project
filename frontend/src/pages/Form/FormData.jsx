@@ -1,4 +1,29 @@
 export const FormData = {
+  "SPICe + Part B": {
+    fields: [
+      {
+        name: "Company Name",
+        type: "text",
+        placeholder: "Enter Company Name",
+      },
+      {
+        name: "PAN Number",
+        type: "text",
+        placeholder: "Enter PAN Number",
+      },
+      {
+        name: "Address",
+        type: "text",
+        placeholder: "Enter Address",
+      },
+      {
+        name: "Contact Number",
+        type: "text",
+        placeholder: "Enter Contact Number",
+      },
+    ],
+  },
+
   "Investor Services": {
     fields: [
       {
@@ -143,59 +168,59 @@ export const FormData = {
   },
   "RUN-LLP (Reserve Unique Name)": {
     form: "LLPDetails",
-    fields : [
-        {
-          name: "Purpose of Filing",
-          type: "select",
-          options: ["New Incorporation", "Conversion of Firm into LLP", "Conversion of Private Company into LLP", "Change of Existing LLP"],
-          placeholder: "",
-        },
-        {
-          name: "2(a) CIN",
-          type: "text",
-          placeholder: "Enter CIN",
-        },
-        {
-          name: "2(b) LLPIN",
-          type: "text",
-          placeholder: "Enter LLPIN",
-        },
-        {
-          name: "NIC Code",
-          type: "number",
-          placeholder: "Enter NIC Code",
-        },
-        {
-          name: "3(a) Main NIC code (sub-class)",
-          type: "text",
-          placeholder: "Enter Main NIC Code",
-        },
-        {
-          name: "3(b) Description of the main sub-class",
-          type: "text",
-          placeholder: "Enter Description",
-        },
-        {
-          name: "4(a) Proposed Name 1",
-          type: "text",
-          placeholder: "Enter Proposed Name 1",
-        },
-        {
-          name: "4(b) Proposed Name 2",
-          type: "text",
-          placeholder: "Enter Proposed Name 2",
-        },
-        {
-          name: "LLP/Company Name to find LLPIN/CIN",
-          type: "text",
-          placeholder: "Enter LLP/Company Name",
-        },
-        {
-          name: "Attachment",
-          type: "file",
-          placeholder: "Upload Attachment",
-        },
-      ],      
+    fields: [
+      {
+        name: "Purpose of Filing",
+        type: "select",
+        options: ["New Incorporation", "Conversion of Firm into LLP", "Conversion of Private Company into LLP", "Change of Existing LLP"],
+        placeholder: "",
+      },
+      {
+        name: "2(a) CIN",
+        type: "text",
+        placeholder: "Enter CIN",
+      },
+      {
+        name: "2(b) LLPIN",
+        type: "text",
+        placeholder: "Enter LLPIN",
+      },
+      {
+        name: "NIC Code",
+        type: "number",
+        placeholder: "Enter NIC Code",
+      },
+      {
+        name: "3(a) Main NIC code (sub-class)",
+        type: "text",
+        placeholder: "Enter Main NIC Code",
+      },
+      {
+        name: "3(b) Description of the main sub-class",
+        type: "text",
+        placeholder: "Enter Description",
+      },
+      {
+        name: "4(a) Proposed Name 1",
+        type: "text",
+        placeholder: "Enter Proposed Name 1",
+      },
+      {
+        name: "4(b) Proposed Name 2",
+        type: "text",
+        placeholder: "Enter Proposed Name 2",
+      },
+      {
+        name: "LLP/Company Name to find LLPIN/CIN",
+        type: "text",
+        placeholder: "Enter LLP/Company Name",
+      },
+      {
+        name: "Attachment",
+        type: "file",
+        placeholder: "Upload Attachment",
+      },
+    ],
   },
   "Fillip Incorporation of LLP": {
     form: "LLPForm",
@@ -288,16 +313,16 @@ export const FormData = {
     ],
   },
   "Form 23-Application for direction to LLP to change its name to the Registrar":
-    {
-      form: "LLPForm",
-      fields: [
-        {
-          name: "New Name",
-          type: "text",
-          placeholder: "Enter New Name",
-        },
-      ],
-    },
+  {
+    form: "LLPForm",
+    fields: [
+      {
+        name: "New Name",
+        type: "text",
+        placeholder: "Enter New Name",
+      },
+    ],
+  },
   "Form 24 - Application for striking off name": {
     form: "LLPForm",
     fields: [
@@ -360,27 +385,27 @@ export const FormData = {
   },
 
   "Form LLP BEN 2 - Return to the Registrar in respect of declaration under section 90":
-    {
-      form: "LLPForm",
-      fields: [
-        {
-          name: "Declaration Details",
-          type: "text",
-          placeholder: "Enter Declaration Details",
-        },
-      ],
-    },
+  {
+    form: "LLPForm",
+    fields: [
+      {
+        name: "Declaration Details",
+        type: "text",
+        placeholder: "Enter Declaration Details",
+      },
+    ],
+  },
   "Form 4D - Return to the Registrar in respect of declaration of beneficial Interest in contribution received by the LLP":
-    {
-      form: "LLPForm",
-      fields: [
-        {
-          name: "Beneficial Interest Details",
-          type: "text",
-          placeholder: "Enter Beneficial Interest Details",
-        },
-      ],
-    },
+  {
+    form: "LLPForm",
+    fields: [
+      {
+        name: "Beneficial Interest Details",
+        type: "text",
+        placeholder: "Enter Beneficial Interest Details",
+      },
+    ],
+  },
   "Verify DIN PAN Details of Director": {
     fields: [
       {
@@ -405,37 +430,37 @@ export const FormData = {
     ],
   },
   "Find LLPIN": {
-    fields : [
-        {
-          name: "Search Type",
-          type: "select",
-          options: [ "Search Based on Existing Company/LLP Name", "Search Based on Old Company/LLP Name"],
-        },
-        {
-          name: "Company/LLP Name",
-          type: "text",
-          placeholder: "Enter your Company/LLP Name",
-          condition: "existing", 
-        },
-        {
-          name: "Existing Name",
-          type: "text",
-          placeholder: "Enter Existing Name",
-          condition: "existing",
-        },
-        {
-          name: "Old Company/LLP Name",
-          type: "text",
-          placeholder: "Enter Old Company/LLP Name",
-          condition: "old", 
-        },
-        {
-          name: "Old Name",
-          type: "text",
-          placeholder: "Enter Old Name",
-          condition: "old", 
-        },
-      ],
+    fields: [
+      {
+        name: "Search Type",
+        type: "select",
+        options: ["Search Based on Existing Company/LLP Name", "Search Based on Old Company/LLP Name"],
+      },
+      {
+        name: "Company/LLP Name",
+        type: "text",
+        placeholder: "Enter your Company/LLP Name",
+        condition: "existing",
+      },
+      {
+        name: "Existing Name",
+        type: "text",
+        placeholder: "Enter Existing Name",
+        condition: "existing",
+      },
+      {
+        name: "Old Company/LLP Name",
+        type: "text",
+        placeholder: "Enter Old Company/LLP Name",
+        condition: "old",
+      },
+      {
+        name: "Old Name",
+        type: "text",
+        placeholder: "Enter Old Name",
+        condition: "old",
+      },
+    ],
   },
   "Find CIN": {
     fields: [
@@ -770,146 +795,174 @@ export const FormData = {
   },
   "RUN - Application for change of name of existing company": {
     form: "RUNForm",
-    fields : [
-        {
-          name: "CIN",
-          type: "text",
-          placeholder: "Enter your CIN",
-          required: true
-        },
-        {
-          name: "Proposed Name 1",
-          type: "text",
-          placeholder: "Enter Proposed Name 1",
-          required: true
-        },
-        {
-          name: "Proposed Name 2",
-          type: "text",
-          placeholder: "Enter Proposed Name 2",
-          required: true
-        },
-        {
-          name: "Comments",
-          type: "textarea",
-          placeholder: "Enter your comments",
-          required: true
-        },
-        {
-          name: "Optional Attachment(s)",
-          type: "file",
-          placeholder: "Upload any optional attachment(s)"
-        }
-      ]
+    fields: [
+      {
+        name: "CIN",
+        type: "text",
+        placeholder: "Enter your CIN",
+        required: true
+      },
+      {
+        name: "Proposed Name 1",
+        type: "text",
+        placeholder: "Enter Proposed Name 1",
+        required: true
+      },
+      {
+        name: "Proposed Name 2",
+        type: "text",
+        placeholder: "Enter Proposed Name 2",
+        required: true
+      },
+      {
+        name: "Comments",
+        type: "textarea",
+        placeholder: "Enter your comments",
+        required: true
+      },
+      {
+        name: "Optional Attachment(s)",
+        type: "file",
+        placeholder: "Upload any optional attachment(s)"
+      }
+    ]
   },
   "SPICE+ Form - Reserve name for new company incorporation": {
     form: "SPICEForm",
-    fields : [
-        {
-          name: "Type of Company",
-          type: "select",
-          options: [
-            "Producer Company",
-            "Unlimited Company",
-            "Private Company",
-            "IFSC Company",
-            "Section 8 Company",
-            "Nidhi Company",
-            "New Company(Other)",
-            "Part 1 Section 8 Company",
-            "Part 1 LLP to Company",
-            "Part 1 Firm Company",
-            "Part 1 Other"
-          ],
-          placeholder: "Select Type of Company",
-          required: true
-        },
-        {
-          name: "Class of Company",
-          type: "select",
-          options: ["Public", "Private"],
-          placeholder: "Select Class of Company",
-          required: true
-        },
-        {
-          name: "Category of Company",
-          type: "select",
-          options: ["Option X", "Option Y", "Option Z"],
-          placeholder: "Select Category of Company",
-          required: true
-        },
-        {
-          name: "Sub Category of Company",
-          type: "select",
-          options: ["Option Alpha", "Option Beta", "Option Gamma"],
-          placeholder: "Select Sub Category of Company"
-        },
-        {
-          name: "Main NIC Code",
-          type: "text",
-          placeholder: "Enter Main NIC Code",
-          required: true
-        },
-        {
-          name: "Particulars of the proposed or approved name - 1",
-          type: "text",
-          placeholder: "Enter Here",
-          required: true
-        },
-        {
-          name: "Particulars of the proposed or approved name - 2",
-          type: "text",
-          placeholder: "Enter Here",
-          required: true
-        },
-        {
-          name: "Optional attachment(s) - if any",
-          type: "file",
-          placeholder: "Upload any optional attachments"
-        },
-        {
-          name: "Company Name",
-          type: "text",
-          placeholder: "Enter your company name"
-        },
-        {
-          name: "CIN / LLPIN",
-          type: "text",
-          placeholder: "Enter your CIN/LLPIN"
-        },
-        {
-          name: "DIN Number (if Applicable)",
-          type: "text",
-          placeholder: "Enter your DIN number"
-        },
-        {
-          name: "PAN",
-          type: "text",
-          placeholder: "Enter your PAN"
-        },
-        {
-          name: "User ID",
-          type: "text",
-          placeholder: "Enter your user ID"
-        },
-        {
-          name: "SRN Number (if not applicable enter NA)",
-          type: "text",
-          placeholder: "Enter SRN Number",
-          required: true
-        },
-        {
-          name: "Others",
-          type: "textarea",
-          placeholder: "Please copy and paste exact error",
-          required: true
-        },
-        {
-          name: "Logged Date & Time",
-          type: "datetime-local",
-          placeholder: "Select the date and time"
-        }
-      ],
+    fields: [
+      {
+        name: "Type of Company",
+        type: "select",
+        options: [
+          "Producer Company",
+          "Unlimited Company",
+          "Private Company",
+          "IFSC Company",
+          "Section 8 Company",
+          "Nidhi Company",
+          "New Company(Other)",
+          "Part 1 Section 8 Company",
+          "Part 1 LLP to Company",
+          "Part 1 Firm Company",
+          "Part 1 Other"
+        ],
+        placeholder: "Select Type of Company",
+        required: true
+      },
+
+
+
+
+
+      // {
+      //   "RadioGroup": {
+      //     "defaultValue": "comfortable",
+      //     "items": [
+      //       {
+      //         "value": "default",
+      //         "id": "r1",
+      //         "label": "Default"
+      //       },
+      //       {
+      //         "value": "comfortable",
+      //         "id": "r2",
+      //         "label": "Comfortable"
+      //       },
+      //       {
+      //         "value": "compact",
+      //         "id": "r3",
+      //         "label": "Compact"
+      //       }
+      //     ]
+      //   }
+      // },
+
+      {
+        name: "Class of Company",
+        type: "select",
+        options: ["Public", "Private"],
+        placeholder: "Select Class of Company",
+        required: true
+      },
+      {
+        name: "Category of Company",
+        type: "select",
+        options: ["Option X", "Option Y", "Option Z"],
+        placeholder: "Select Category of Company",
+        required: true
+      },
+      {
+        name: "Sub Category of Company",
+        type: "select",
+        options: ["Option Alpha", "Option Beta", "Option Gamma"],
+        placeholder: "Select Sub Category of Company"
+      },
+      {
+        name: "Main NIC Code",
+        type: "text",
+        placeholder: "Enter Main NIC Code",
+        required: true
+      },
+      {
+        name: "Particulars of the proposed or approved name - 1",
+        type: "text",
+        placeholder: "Enter Here",
+        required: true
+      },
+      {
+        name: "Particulars of the proposed or approved name - 2",
+        type: "text",
+        placeholder: "Enter Here",
+        required: true
+      },
+      {
+        name: "Optional attachment(s) - if any",
+        type: "file",
+        placeholder: "Upload any optional attachments"
+      },
+      {
+        name: "Company Name",
+        type: "text",
+        placeholder: "Enter your company name"
+      },
+      {
+        name: "CIN / LLPIN",
+        type: "text",
+        placeholder: "Enter your CIN/LLPIN"
+      },
+      {
+        name: "DIN Number (if Applicable)",
+        type: "text",
+        placeholder: "Enter your DIN number"
+      },
+      {
+        name: "PAN",
+        type: "text",
+        placeholder: "Enter your PAN"
+      },
+      {
+        name: "User ID",
+        type: "text",
+        placeholder: "Enter your user ID"
+      },
+      {
+        name: "SRN Number (if not applicable enter NA)",
+        type: "text",
+        placeholder: "Enter SRN Number",
+        required: true
+      },
+      {
+        name: "Others",
+        type: "textarea",
+        placeholder: "Please copy and paste exact error",
+        required: true
+      },
+      {
+        name: "Logged Date & Time",
+        type: "datetime-local",
+        placeholder: "Select the date and time"
+      }
+    ],
   },
   "INC-4 - One Person Company - Change in Member/ Nominee": {
     form: "OPOCForm",
@@ -1157,27 +1210,27 @@ export const FormData = {
     ],
   },
   "Form CHG-8-RD approval for delay in creation/ modification/rectification of charge":
-    {
-      form: "ChargeRDApprovalForm",
-      fields: [
-        {
-          name: "Charge Creation/Modification Details",
-          type: "text",
-          placeholder: "Enter Charge Details",
-        },
-      ],
-    },
+  {
+    form: "ChargeRDApprovalForm",
+    fields: [
+      {
+        name: "Charge Creation/Modification Details",
+        type: "text",
+        placeholder: "Enter Charge Details",
+      },
+    ],
+  },
   "Form CHG-9-Intimation for registration of creation or modification of charge for debentures":
-    {
-      form: "ChargeDebentureForm",
-      fields: [
-        {
-          name: "Charge Details",
-          type: "text",
-          placeholder: "Enter Charge Details",
-        },
-      ],
-    },
+  {
+    form: "ChargeDebentureForm",
+    fields: [
+      {
+        name: "Charge Details",
+        type: "text",
+        placeholder: "Enter Charge Details",
+      },
+    ],
+  },
   "INC-20A - Declaration for commencement of business": {
     form: "CommencementBusinessForm",
     fields: [
@@ -1263,6 +1316,24 @@ export const FormData = {
       },
     ],
   },
+
+  "AOC-5-Notice of address at which books of account are maintained": {
+    form: "NoticeOfAddressForm",
+    fields: [
+      {
+        name: "Company Name",
+        type: "text",
+        placeholder: "Enter Company Name",
+      },
+      {
+        name: "Address",
+        type: "text",
+        className: "w-[50%]",
+        placeholder: "Enter Address",
+      },
+    ]
+  },
+
   "Refund - Refund form": {
     form: "RefundForm",
     fields: [
@@ -1278,22 +1349,24 @@ export const FormData = {
       },
     ],
   },
+
+
   "BEN-2 - Return to the Registrar in respect of declaration under section 90":
-    {
-      form: "BEN2Form",
-      fields: [
-        {
-          name: "Beneficial Owner Name",
-          type: "text",
-          placeholder: "Enter Beneficial Owner Name",
-        },
-        {
-          name: "Details",
-          type: "textarea",
-          placeholder: "Enter Details",
-        },
-      ],
-    },
+  {
+    form: "BEN2Form",
+    fields: [
+      {
+        name: "Beneficial Owner Name",
+        type: "text",
+        placeholder: "Enter Beneficial Owner Name",
+      },
+      {
+        name: "Details",
+        type: "textarea",
+        placeholder: "Enter Details",
+      },
+    ],
+  },
   "MGT-14 - Resolutions and agreements u/s 117": {
     form: "MGT14Form",
     fields: [
@@ -1660,21 +1733,21 @@ export const FormData = {
     ],
   },
   "Form DPT 4 - Statement regarding deposits existing on the commencement of the Act":
-    {
-      form: "DPT4DepositsStatementForm",
-      fields: [
-        {
-          name: "Company Name",
-          type: "text",
-          placeholder: "Enter Company Name",
-        },
-        {
-          name: "Deposit Details",
-          type: "textarea",
-          placeholder: "Enter Details of Existing Deposits",
-        },
-      ],
-    },
+  {
+    form: "DPT4DepositsStatementForm",
+    fields: [
+      {
+        name: "Company Name",
+        type: "text",
+        placeholder: "Enter Company Name",
+      },
+      {
+        name: "Deposit Details",
+        type: "textarea",
+        placeholder: "Enter Details of Existing Deposits",
+      },
+    ],
+  },
   "NDH-1 - Return of Statutory Compliances": {
     form: "NDH1StatutoryCompliancesForm",
     fields: [

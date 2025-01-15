@@ -13,30 +13,50 @@ import { Button } from "@/components/ui/button";
 const Payment = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchPayments = async () => {
+      const token = localStorage.getItem("accessToken");
+
+      if (!token) {
+        console.error("No access token found!");
+        setError("No access token found");
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch("http://localhost:8000/api/mca//getpaymentlist",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        ); 
+        const response = await fetch("http://localhost:8000/api/mca//getpaymentlist", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const result = await response.json();
-        setData(result); 
+
+        if (Array.isArray(result)) {
+          setData(result);
+        } else {
+          setError("Data is not in the expected format");
+        }
       } catch (error) {
-        console.error("Error fetching payment data:", error);
+        setError(`Error fetching payment data: ${error.message}`);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPayments();
   }, []);
 
- 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
@@ -52,6 +72,9 @@ const Payment = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="p-4">
