@@ -1,136 +1,263 @@
 import React, { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox'; 
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Table } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select.jsx';
-import axios from 'axios';
 
 const DemoForm = () => {
- 
-  const [formData, setFormData] = useState({
-    id: Number,
-    name: '',
-    value: '',
-    created_by: '',
-    status: '', 
-  });
-
-  const [errors, setErrors] = useState({}); 
-  const [loading, setLoading] = useState(false); 
-  const [successMessage, setSuccessMessage] = useState(''); 
+  const [isEntrenched, setIsEntrenched] = useState(false); 
+  const [numberOfArticles, setNumberOfArticles] = useState('');
+  const [articleDetails, setArticleDetails] = useState([
+    { srNo: '', articleNumber: '', description: '' },
+  ]);
 
   
-  const fields = [
-    { name: 'id', label: 'ID',type: 'number', placeholder: 'Enter ID' },
-    { name: 'name', label: 'Name',type: 'string', placeholder: 'Enter Name' },
-    { name: 'value', label: 'Value',type: 'string', placeholder: 'Enter Value' },
-    { name: 'created_by', label: 'Created By',type: 'string', placeholder: 'Enter Created By' },
-    { name: 'status', label: 'Status', type: 'select', placeholder: 'Select a Status', options: [
-      { value: 'Active', label: 'Active' },
-      { value: 'Unactive', label: 'Unactive' },
-    ] }
-  ];
-
-  
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handleCheckboxChange = (value) => {
+    setIsEntrenched(value === 'yes');
   };
-
-  const handleSelectChange = (value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      status: value,
-    }));
-  };
-
-  const onSubmit = async (e) => {
-    console.log('Form data:', formData);
-    e.preventDefault();
-
-    let validationErrors = {};
-    fields.forEach(field => {
-      if (!formData[field.name]) {
-        validationErrors[field.name] = `${field.label} is required`;
-      }
-    });
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      setLoading(true); 
-      setErrors({});
-      try {
-        console.log("Form data: in try", formData);
-        const response = await axios.post('http://localhost:8000/api/mca/fillform', formData);
-        console.log('Response:', response.data);
-        setSuccessMessage('Form submitted successfully!');
-      } catch (error) {
-        console.error('Error submitting form:', error);
-        setErrors({ form: 'Failed to submit form. Please try again.' });
-      } finally {
-        setLoading(false);
-      }
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === 'numberOfArticles') {
+      setNumberOfArticles(value);
     }
   };
 
+  const handleArticleDetailChange = (index, field, value) => {
+    const updatedArticleDetails = [...articleDetails];
+    updatedArticleDetails[index][field] = value;
+    setArticleDetails(updatedArticleDetails);
+  };
+
+  const handleAddRow = () => {
+    setArticleDetails([...articleDetails, { srNo: '', articleNumber: '', description: '' }]);
+  };
+
   return (
-    <div className="mx-auto p-4">
-      <form onSubmit={onSubmit}>
-        <div className="grid grid-cols-2 gap-4">
-          {fields.map((field) => (
-            <div key={field.name}>
-              <Label htmlFor={field.name}>{field.label}</Label>
-
-              {field.type === 'select' ? (
-                <Select
-                  value={formData[field.name]}
-                  onValueChange={handleSelectChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={field.placeholder} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {field.options.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type={field.type}
-                  value={formData[field.name]}
-                  onChange={handleInputChange}
-                  placeholder={field.placeholder}
-                  className="mt-2 block w-full px-4 py-2 rounded-lg"
-                />
-              )}
-
-              {errors[field.name] && (
-                <p className="text-blue-500 text-sm">{errors[field.name]}</p>
-              )}
-            </div>
-          ))}
+    <div className="mb-6">
+      <div className="mb-4">
+        <label className="block text-lg font-medium">
+          1(a) *Whether AOA is entrenched?
+        </label>
+        <div className="flex gap-4 mt-2">
+          <label className="flex items-center gap-1">
+            <Checkbox
+              checked={isEntrenched === true} 
+              onCheckedChange={() => handleCheckboxChange('yes')} 
+            />
+            Yes
+          </label>
+          <label className="flex items-center  gap-1">
+            <Checkbox
+              checked={isEntrenched === false} 
+              onCheckedChange={() => handleCheckboxChange('no')} 
+            />
+            No
+          </label>
         </div>
+      </div>
 
-        <div className="py-5">
-          <Button type="submit" className="px-6 py-4 rounded-lg" disabled={loading}>
-            {loading ? 'Submitting...' : 'Submit'}
-          </Button>
+      {isEntrenched && (
+        <div className="mt-6 space-y-4">
+          <div className="mb-4">
+            <label className="block text-lg font-medium mb-2">
+              (b) Number of Articles to which provisions of entrenchment is applicable
+            </label>
+            <Input
+              type="number"
+              name="numberOfArticles"
+              value={numberOfArticles}
+              onChange={handleInputChange}
+              placeholder="Enter number of articles"
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="block text-lg font-medium mb-2">
+              Details of such articles
+            </label>
+            <Table >
+              <thead >
+                <tr >
+                  <th className="px-4 py-3 ">Sr no</th>
+                  <th >Article number</th>
+                  <th >Short description on entrenchment of the clause</th>
+                </tr>
+              </thead>
+              <tbody >
+                {articleDetails.map((row, index) => (
+                  <tr key={index} >
+                    <td>
+                      <Input
+                        type="text"
+                        value={row.srNo}
+                        onChange={(e) => handleArticleDetailChange(index, 'srNo', e.target.value)}
+                        placeholder="Sr no"
+                      />
+                    </td>
+                    <td>
+                      <Input
+                        type="text"
+                        value={row.articleNumber}
+                        onChange={(e) => handleArticleDetailChange(index, 'articleNumber', e.target.value)}
+                        placeholder="Article number"
+                      />
+                    </td>
+                    <td>
+                      <Input
+                        type="text"
+                        value={row.description}
+                        onChange={(e) => handleArticleDetailChange(index, 'description', e.target.value)}
+                        placeholder="Short description"
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+            <Button
+              onClick={handleAddRow}
+              className="mt-4 "
+            >
+              Add Article
+            </Button>
+          </div>
         </div>
-      </form>
-
-      {successMessage && <p className="text-green-500">{successMessage}</p>}
-      {errors.form && <p className="text-red-500">{errors.form}</p>}
+      )}
     </div>
   );
 };
 
 export default DemoForm;
+
+
+// import React, { useState } from 'react';
+// import { Input } from '@/components/ui/input'; 
+// import { Table } from '@/components/ui/table'; 
+
+// const DemoForm = () => {
+//   const [isEntrenched, setIsEntrenched] = useState(false); 
+//   const [numberOfArticles, setNumberOfArticles] = useState('');
+//   const [articleDetails, setArticleDetails] = useState([
+//     { srNo: '', articleNumber: '', description: '' },
+//   ]);
+
+//   const handleCheckboxChange = (event, value) => {
+//     // Update the isEntrenched state based on which checkbox is clicked
+//     setIsEntrenched(value === 'yes');
+//   };
+
+//   const handleInputChange = (event) => {
+//     const { name, value } = event.target;
+//     if (name === 'numberOfArticles') {
+//       setNumberOfArticles(value);
+//     }
+//   };
+
+//   const handleArticleDetailChange = (index, field, value) => {
+//     const updatedArticleDetails = [...articleDetails];
+//     updatedArticleDetails[index][field] = value;
+//     setArticleDetails(updatedArticleDetails);
+//   };
+
+//   const handleAddRow = () => {
+//     setArticleDetails([...articleDetails, { srNo: '', articleNumber: '', description: '' }]);
+//   };
+
+//   return (
+//     <div className="p-6">
+//       <div className="mb-4">
+//         <label className="block text-lg font-medium">
+//           1(a) *Whether AOA is entrenched?
+//         </label>
+//         <div className="flex gap-4 mt-2">
+//           <label className="flex items-center">
+//             <input
+//               type="checkbox"
+//               checked={isEntrenched === true}
+//               onChange={(e) => handleCheckboxChange(e, 'yes')}
+//             />
+//             Yes
+//           </label>
+//           <label className="flex items-center">
+//             <input
+//               type="checkbox"
+//               checked={isEntrenched === false}
+//               onChange={(e) => handleCheckboxChange(e, 'no')}
+//             />
+//             No
+//           </label>
+//         </div>
+//       </div>
+
+//       {isEntrenched && (
+//         <div className="mt-6 space-y-4">
+//           <div className="mb-4">
+//             <label className="block text-lg font-medium">
+//               (b) Number of Articles to which provisions of entrenchment is applicable
+//             </label>
+//             <Input
+//               type="number"
+//               name="numberOfArticles"
+//               value={numberOfArticles}
+//               onChange={handleInputChange}
+//               placeholder="Enter number of articles"
+//             />
+//           </div>
+
+//           <div className="mb-4">
+//             <label className="block text-lg font-medium">
+//               Details of such articles
+//             </label>
+//             <Table>
+//               <thead>
+//                 <tr>
+//                   <th>Sr no</th>
+//                   <th>Article number</th>
+//                   <th>Short description on entrenchment of the clause</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {articleDetails.map((row, index) => (
+//                   <tr key={index}>
+//                     <td>
+//                       <Input
+//                         type="text"
+//                         value={row.srNo}
+//                         onChange={(e) => handleArticleDetailChange(index, 'srNo', e.target.value)}
+//                         placeholder="Sr no"
+//                       />
+//                     </td>
+//                     <td>
+//                       <Input
+//                         type="text"
+//                         value={row.articleNumber}
+//                         onChange={(e) => handleArticleDetailChange(index, 'articleNumber', e.target.value)}
+//                         placeholder="Article number"
+//                       />
+//                     </td>
+//                     <td>
+//                       <Input
+//                         type="text"
+//                         value={row.description}
+//                         onChange={(e) => handleArticleDetailChange(index, 'description', e.target.value)}
+//                         placeholder="Short description"
+//                       />
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </Table>
+//             <button
+//               onClick={handleAddRow}
+//               className="mt-4 text-blue-500 hover:text-blue-700"
+//             >
+//               Add Article
+//             </button>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default DemoForm;

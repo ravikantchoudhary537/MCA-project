@@ -5,7 +5,7 @@ import {
   FaFileAlt,
   FaMoneyBill,
   FaCogs,
-} from "react-icons/fa"; // React Icons
+} from "react-icons/fa"; 
 import { MdOutlineAssignment } from "react-icons/md";
 import Logout from "../auth/logout/Logout";
 
@@ -58,6 +58,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const sidebarItems = [
     { name: "Overview", icon: <FaTachometerAlt />, path: "/overview" },
     { name: "Fill Form", icon: <MdOutlineAssignment />, path: "/fillform" },
+    { name: "SPICe Part B", icon: <MdOutlineAssignment />, path: "Spice-Part-B" },
     { name: "Payment", icon: <FaMoneyBill />, path: "/payment" },
     { name: "Status", icon: <FaFileAlt />, path: "/status" },
     { name: "Settings", icon: <FaCogs />, path: "/settings" },
@@ -103,7 +104,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           {/* Logo */}
           <NavLink end to="/" className="block">
             <div className="flex">
-              <div className="flex items-center justify-center bg-violet-500 rounded-full h-8 w-8">
+              {/* <div className="flex items-center justify-center bg-violet-500 rounded-full h-8 w-8">
                 <span className="text-white font-bold text-xl">M</span>
               </div>
               <div className="flex items-center justify-center bg-yellow-500 rounded-full h-8 w-8">
@@ -111,8 +112,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               </div>
               <div className="flex items-center justify-center bg-violet-500 rounded-full h-8 w-8">
                 <span className="text-white font-bold text-xl">A</span>
-              </div>
-              {/* <h1 className="text-2xl font-bold dark:text-white">CA</h1> */}
+              </div> */}
+               <div className=" flex items-center justify-center gap-2  rounded-2xl h-12 w-full mt-">
+                <span><img className="h-8 w-8"  src="https://cdn-icons-png.flaticon.com/128/1828/1828673.png" alt="" /></span>
+               <h1 className="text-violet-400 bg-v font- font-bold  text-3xl ">LEGAFIN</h1> 
+              </div> 
+                                                                             
             </div>
           </NavLink>
         </div>
