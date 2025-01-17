@@ -11,6 +11,7 @@ import Setting from "./pages/settings/Setting";
 import Logout from "./auth/logout/Logout";
 import SingUp from "./pages/signup/SingUp";
 import ProtectedRoute from "./auth/logout/ProtectedRoute";
+import SPICePartB from "./pages/SPICe-Part-B/SPICePartB";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         >
           <Route path="/overview" element={<Overview />} />
           <Route path="/fillform" element={<FillaForm />} />
+          <Route path="/Spice-Part-B" element={<SPICePartB/>} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/status" element={<Status />} />
           <Route path="/settings" element={<Setting />} />
