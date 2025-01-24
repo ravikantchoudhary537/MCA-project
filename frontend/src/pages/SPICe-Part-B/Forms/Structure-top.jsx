@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox'; 
-import { Input } from '@/components/ui/input';  
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 import { Table } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 
 const StructureTopPart = () => {
-  const [isEntrenched, setIsEntrenched] = useState(false); 
+  const [isEntrenched, setIsEntrenched] = useState(false);
   const [numberOfArticles, setNumberOfArticles] = useState('');
   const [articleDetails, setArticleDetails] = useState([
     { srNo: '', articleNumber: '', description: '' },
   ]);
 
-  
+
   const handleCheckboxChange = (value) => {
     setIsEntrenched(value === 'yes');
   };
@@ -31,12 +31,18 @@ const StructureTopPart = () => {
 
   const handleAddRow = () => {
     setArticleDetails([...articleDetails, { srNo: '', articleNumber: '', description: '' }]);
-  };   
+  };
 
 
   return (
     <div className="mb-6">
-      <h3 className='text-2xl mb-4 text-center text-violet-500 font-semibold' >Structure of the Company</h3>
+      <h3 className='text-2xl mb-4 text-center relative text-violet-500 font-semibold  decoration-violet-500 after:h-[2px] after:bottom-0 after:transition-all after:duration-300 ' >Structure of the Company</h3>
+
+      {/* <h3 className="text-3xl mb-6 text-center text-violet-600 font-extrabold">
+        Structure of the Company
+        <span className="block w-full border-b-4 border-double border-violet-500 mt-2"></span>
+      </h3> */}
+
       <div className="mb-4">
         <label className="block text-lg font-medium">
           1(a) *Whether AOA is entrenched?
@@ -44,15 +50,15 @@ const StructureTopPart = () => {
         <div className="flex gap-4 mt-2">
           <label className="flex items-center gap-1">
             <Checkbox
-              checked={isEntrenched === true} 
-              onCheckedChange={() => handleCheckboxChange('yes')} 
+              checked={isEntrenched === true}
+              onCheckedChange={() => handleCheckboxChange('yes')}
             />
             Yes
           </label>
           <label className="flex items-center  gap-1">
             <Checkbox
-              checked={isEntrenched === false} 
-              onCheckedChange={() => handleCheckboxChange('no')} 
+              checked={isEntrenched === false}
+              onCheckedChange={() => handleCheckboxChange('no')}
             />
             No
           </label>
@@ -117,19 +123,19 @@ const StructureTopPart = () => {
                 ))}
               </tbody>
             </Table>
-            <Button
+            {/* <Button
               onClick={handleAddRow}
               className="mt-4 "
             >
               Add Article
-            </Button>
+            </Button> */}
           </div>
         </div>
       )}
 
-     <div className="mb-4 mt-4">
+      <div className="mb-4 mt-4">
         <label className="block text-lg font-medium">
-        2 *Company is
+          2 *Company is
         </label>
         <div className="flex gap-4 mt-2">
           <label className="flex items-center gap-1">
@@ -144,7 +150,7 @@ const StructureTopPart = () => {
           </label>
         </div>
       </div>
-      
+
     </div>
   );
 };
