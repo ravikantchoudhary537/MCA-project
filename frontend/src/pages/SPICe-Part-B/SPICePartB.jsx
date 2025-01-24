@@ -65,85 +65,9 @@ const SPICePartB = () => {
 
             {currentStep === 1 && (
                 <div className='space-y-4'>
-                    <h2 className="text-2xl font-semibold">3A Capital Structure</h2>
-
-                    <div>
-                        <Label>Total Authorized Share Capital (INR)</Label>
-                        <Input type="number" placeholder="Enter Total Authorized Share Capital (INR)" className="w-full" />
-                    </div>
-
-                    <div>
-                        <Label>Total classified authorized share capital (in INR)</Label>
-                        <Input type="number" placeholder="Enter Total classified authorized share capital (in INR)" className="w-full" />
-                    </div>
-
-                    <div>
-                        <Label>Total Subscribed Share Capital (INR)</Label>
-                        <Input type="number" placeholder="Enter Total Subscribed Share Capital" className="w-full" />
-                    </div>
-
-                    <div>
-                        <Label>Total Unclassified Authorized Share Capital (INR)</Label>
-                        <Input type="number" placeholder="Enter Total Unclassified Authorized Share Capital" className="w-full" />
-                    </div>
-
-                    <div className="mt-6">
-                        <Button type="button" onClick={nextStep} className="w-1/6">Next</Button>
-                    </div>
-                </div>
-            )}
-
-            {currentStep === 2 && (
-                <div className='space-y-4'>
-                    {/* <h2 className="text-2xl font-semibold">Details of Number of Members</h2> */}
 
                     <CapitalStructure />
 
-                    {/* <div>
-                        <Label>Maximum Number of Members</Label>
-                        <Input
-                            type="number"
-                            value={members.maxMembers}
-                            onChange={(e) => setMembers({ ...members, maxMembers: e.target.value })}
-                            className="w-full"
-                            placeholder="Enter Maximum Number of Members"
-                        />
-                    </div>
-
-                    <div>
-                        <Label>Maximum Number of Members Excluding Employees</Label>
-                        <Input
-                            type="number"
-                            value={members.nonEmployeeMaxMembers}
-                            onChange={(e) => setMembers({ ...members, nonEmployeeMaxMembers: e.target.value })}
-                            className="w-full"
-                            placeholder="Enter Maximum Number of Members Excluding Employees"
-                        />
-                    </div>
-
-                    <div>
-                        <Label>Number of Members</Label>
-                        <Input
-                            type="number"
-                            value={members.totalMembers}
-                            onChange={(e) => setMembers({ ...members, totalMembers: e.target.value })}
-                            className="w-full"
-                            placeholder="Enter Number of Members"
-                        />
-                    </div>
-
-                    <div>
-                        <Label>Number of Members Excluding Employees</Label>
-                        <Input
-                            type="number"
-                            value={members.nonEmployeeMembers}
-                            onChange={(e) => setMembers({ ...members, nonEmployeeMembers: e.target.value })}
-                            className="w-full"
-                            placeholder="Enter Number of Members Excluding Employees"
-                        />
-                    </div> */}
-
-                    
                     <div className="flex justify-between mt-6">
                         <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
                         <Button type="button" onClick={nextStep} className="w-1/6">Next</Button>
@@ -151,10 +75,45 @@ const SPICePartB = () => {
                 </div>
             )}
 
+            {currentStep === 2 && (
+
+                <div className='space-y-4'>
+                   
+                <h3 className='text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold' >Address of the Company</h3>
+
+                <div>
+                    <Label>Correspondence Address</Label>
+                    <Input type="text" placeholder="Enter Correspondence Address" className="w-full" />
+                </div>
+
+                <div>
+                    <Label>Address Line 2</Label>
+                    <Input type="text" placeholder="Enter Address Line 2" className="w-full" />
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                    <div>
+                        <Label>Pin Code</Label>
+                        <Input type="text" placeholder="Enter Pin Code" className="w-full" />
+                    </div>
+
+                    <div>
+                        <Label>Mobile Number</Label>
+                        <Input type="text" placeholder="Enter Mobile Number" className="w-full" />
+                    </div>
+                </div>
+
+                <div className="flex justify-between mt-6 ">
+                    <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
+                    <Button type="button" onClick={nextStep} className="w-1/6">Next</Button>
+                </div>
+            </div>
+            )}
+
 
             {currentStep === 3 && (
                 <div className='space-y-4'>
-                    {/* <h2 className="text-2xl font-semibold">Details of Cpmpony Members</h2> */}
+                    <h3 className='text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold' >Subscriber and Directors details</h3>
 
                    <DemoForm />
 
@@ -167,29 +126,8 @@ const SPICePartB = () => {
 
             {currentStep === 4 && (
                 <div className='space-y-4'>
-                    <h2 className="text-2xl font-semibold">Company Address</h2>
-
-                    <div>
-                        <Label>Correspondence Address</Label>
-                        <Input type="text" placeholder="Enter Correspondence Address" className="w-full" />
-                    </div>
-
-                    <div>
-                        <Label>Address Line 2</Label>
-                        <Input type="text" placeholder="Enter Address Line 2" className="w-full" />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-6">
-                        <div>
-                            <Label>Pin Code</Label>
-                            <Input type="text" placeholder="Enter Pin Code" className="w-full" />
-                        </div>
-
-                        <div>
-                            <Label>Mobile Number</Label>
-                            <Input type="text" placeholder="Enter Mobile Number" className="w-full" />
-                        </div>
-                    </div>
+                   
+                    <h3 className='text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold' >Non-individual Subscriber & Individual Subscriber other than Subscriber cum Directors</h3>
 
                     <div className="flex justify-between mt-6 ">
                         <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>

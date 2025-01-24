@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
-import DemoForm from '@/pages/Form/DemoForm';
 import StructureTopPart from './Structure-top';
 
 const CapitalStructure = () => {
@@ -19,12 +18,11 @@ const CapitalStructure = () => {
   const [pretables, setPreTables] = useState([{
     preequityShares: 0,
     prenewequityShares: 0,
-    prenominalAmount: 0,  
+    prenominalAmount: 0,
     prenewnominalAmount: 0,
     pretotalAuthorizedCapital: 0,
     pretotalsubscribedShareCapital: 0
-    // totalAuthorizedCapital: 0,
-    // totalsubscribedShareCapital: 0
+
   }]);
   const formatNumber = (num) => num.toLocaleString();
 
@@ -56,7 +54,7 @@ const CapitalStructure = () => {
     setPreNumClasses(num);
 
     if (isNaN(num) || num <= 0) {
-      setPreNumClasses(""); // Set to default value 1 if invalid input
+      setPreNumClasses("");
     } else {
       setPreNumClasses(num);
     }
@@ -72,7 +70,15 @@ const CapitalStructure = () => {
     setPreTables(prenewTables);
   };
 
- 
+
+  const [unclassifiedAuthorizedCapital, setUnclassifiedAuthorizedCapital] = useState(0);
+
+  const handleUnclassifiedAuthorizedCapitalChange = (e) => {
+    const value = parseFloat(e.target.value);
+    setUnclassifiedAuthorizedCapital(value);
+  };
+
+
   const handleTableInputChange = (index, field, value) => {
     const updatedTables = [...tables];
     updatedTables[index][field] = value;
@@ -86,13 +92,12 @@ const CapitalStructure = () => {
     }
 
     setTables(updatedTables);
-  };   
+  };
 
   const handlePreTableInputChange = (index, field, value) => {
     const updatedTables = [...pretables];
     updatedTables[index][field] = value;
 
-   
     if (field === 'preequityShares' || field === 'prenominalAmount') {
       updatedTables[index].pretotalAuthorizedCapital = updatedTables[index].preequityShares * updatedTables[index].prenominalAmount;
     }
@@ -100,19 +105,38 @@ const CapitalStructure = () => {
       updatedTables[index].pretotalsubscribedShareCapital = updatedTables[index].prenewequityShares * updatedTables[index].prenewnominalAmount;
     }
     setPreTables(updatedTables);
-  };   
-  
+  };
 
-  // Calculate the total values for all tables
   const calculateTotal = (field) => {
     return tables.reduce((total, table) => total + (parseFloat(table[field]) || 0), 0);
-  };  
+  };
+
+  const calculateClassifiedTotal = () => {
+    return tables.reduce((sum, table) => sum + (parseFloat(table.totalAuthorizedCapital) || 0), 0);
+  };
+
+  const precalculateClassifiedTotal = () => {
+    return pretables.reduce((sum, table) => sum + (parseFloat(table.pretotalAuthorizedCapital) || 0), 0);
+  };
+
+  // Function to calculate total authorized share capital (including unclassified)
+  const calculateTotalAuthorizedShareCapital = () => {
+    const totalFromTables = tables.reduce((sum, table) => sum + (parseFloat(table.totalAuthorizedCapital) || 0), 0);
+    const totalAuthorized = totalFromTables + unclassifiedAuthorizedCapital; // Adding unclassified share capital
+    return totalAuthorized;
+  };
 
   const precalculateTotal = (field) => {
     return pretables.reduce((total, table) => total + (parseFloat(table[field]) || 0), 0);
-  };  
+  };
 
-  
+
+  const precalculateTotalAuthorizedShareCapital = () => {
+    const totalFromTables = pretables.reduce((sum, table) => sum + (parseFloat(table.pretotalAuthorizedCapital) || 0), 0);
+    const totalAuthorized = totalFromTables + unclassifiedAuthorizedCapital; // Adding unclassified share capital
+    return totalAuthorized;
+  };
+
   const renderTables = () => {
     return tables.map((_, index) => (
       <div key={index} className="mb-6">
@@ -128,6 +152,17 @@ const CapitalStructure = () => {
                 </tr>
               </thead>
               <tbody>
+                {/* Class of Shares Input */}
+                <tr className="px- py-1 mt- flex">
+                  <td className="px-4 py-">
+                    <Input
+                      type="text"
+                      className="w-full"
+                      placeholder="Enter Class of Shares"
+                    />
+                  </td>
+                </tr>
+
                 <tr>
                   <td className="px-4 py-2">Number of equity shares</td>
                   <td className="px-4 py-2">
@@ -193,12 +228,12 @@ const CapitalStructure = () => {
                 </tr>
               </tbody>
             </table>
+
           </div>
         </div>
       </div>
     ));
   };
-
 
 
   const prerenderTables = () => {
@@ -215,7 +250,19 @@ const CapitalStructure = () => {
                   <th className="px-4 py-2 text-left">Subscribed Capital</th>
                 </tr>
               </thead>
+
               <tbody>
+
+                {/*  Class of Shares Input */}
+                <tr className="px-  py-1 mt- flex">
+                  <td className="px-4 py-">
+                    <Input
+                      type="text"
+                      className="w-full"
+                      placeholder="Enter Class of Shares"
+                    />
+                  </td>
+                </tr>
                 <tr>
                   <td className="px-4 py-2">Number of equity shares</td>
                   <td className="px-4 py-2">
@@ -288,7 +335,6 @@ const CapitalStructure = () => {
     ));
   };
 
-
   return (
     <div className="p-8">
       {/* <DemoForm /> */}
@@ -301,17 +347,18 @@ const CapitalStructure = () => {
           <label className="block mb-2">Total authorized share capital (in INR)</label>
           <Input
             type="number"
-            // value={calculateTotal('totalAuthorizedCapital')}
-            value={calculateTotal('totalAuthorizedCapital') || precalculateTotal('pretotalAuthorizedCapital')}
+            value={calculateTotalAuthorizedShareCapital() || precalculateTotalAuthorizedShareCapital()}
             readOnly
             className="w-full"
           />
         </div>
+
         <div>
           <label className="block mb-2">Total classified authorized share capital (in INR)</label>
           <Input
             type="number"
-            value={calculateTotal('totalAuthorizedCapital') || precalculateTotal('pretotalAuthorizedCapital')}
+            // value={calculateClassifiedTotal() || precalculateTotal('pretotalAuthorizedCapital')}
+            value={calculateClassifiedTotal() || precalculateClassifiedTotal()}
             readOnly
             className="w-full"
           />
@@ -325,11 +372,13 @@ const CapitalStructure = () => {
             className="w-full"
           />
         </div>
+
         <div>
           <label className="block mb-2">Total unclassified authorized share capital (in INR)</label>
           <Input
             type="number"
-            placeholder="0"
+            value={unclassifiedAuthorizedCapital}
+            onChange={handleUnclassifiedAuthorizedCapitalChange}
             className="w-full"
           />
         </div>
@@ -346,12 +395,9 @@ const CapitalStructure = () => {
             className="w-[50%]"
           />
         </div>
-
         {/* Render the dynamically generated tables */}
-        {renderTables()} 
-
+        {renderTables()}
       </div>
-      
       <h3 className="text-lg font-semibold mb-4">3A(ii) Prefrence Share Capital</h3>
       <div className="space-y-4">
         <div>
@@ -364,14 +410,15 @@ const CapitalStructure = () => {
           />
         </div>
         {prerenderTables()}
-        
+
       </div>
 
     </div>
   );
 };
-
 export default CapitalStructure;
+
+
 
 
 
@@ -455,7 +502,7 @@ export default CapitalStructure;
 //         <div className="space-y-4">
 //           <div className="overflow-x-auto">
 //             <table className="min-w-full text-sm">
-//               <thead>  
+//               <thead>
 //                 <tr>
 //                   <th className="px-4 py-2 text-left">Class of Shares</th>
 //                   <th className="px-4 py-2 text-left">Authorized Capital</th>
