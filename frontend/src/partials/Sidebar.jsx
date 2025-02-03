@@ -5,8 +5,10 @@ import {
   FaFileAlt,
   FaMoneyBill,
   FaCogs,
-} from "react-icons/fa"; 
+  
+} from "react-icons/fa";
 import { MdOutlineAssignment } from "react-icons/md";
+import { MdFormatListBulletedAdd } from "react-icons/md";
 import Logout from "../auth/logout/Logout";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
@@ -58,7 +60,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const sidebarItems = [
     { name: "Overview", icon: <FaTachometerAlt />, path: "/overview" },
     { name: "Fill Form", icon: <MdOutlineAssignment />, path: "/fillform" },
-    { name: "SPICe Part B", icon: <MdOutlineAssignment />, path: "Spice-Part-B" },
+    // { name: "SPICe Part B", icon: <MdOutlineAssignment />, path: "Spice-Part-B" },
+    { name: "SPICe Form", icon: <MdFormatListBulletedAdd />, path: "Spice-Form" },  
     { name: "Payment", icon: <FaMoneyBill />, path: "/payment" },
     { name: "Status", icon: <FaFileAlt />, path: "/status" },
     { name: "Settings", icon: <FaCogs />, path: "/settings" },
@@ -68,9 +71,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     <div className="min-w-fit">
       {/* Sidebar backdrop (mobile only) */}
       <div
-        className={`fixed inset-0 bg-gray-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
-          sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 bg-gray-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
         aria-hidden="true"
       ></div>
 
@@ -78,9 +80,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:w-64 2xl:w-64 shrink-0 bg-white dark:bg-gray-800 p-4 transition-all duration-200 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-64"
-        }`}
+        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:w-64 2xl:w-64 shrink-0 bg-white dark:bg-gray-800 p-4 transition-all duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-64"
+          }`}
       >
         {/* Sidebar header */}
         <div className="flex justify-between mb-10 pr-3 sm:px-2">
@@ -113,11 +114,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               <div className="flex items-center justify-center bg-violet-500 rounded-full h-8 w-8">
                 <span className="text-white font-bold text-xl">A</span>
               </div> */}
-               <div className=" flex items-center justify-center gap-2  rounded-2xl h-12 w-full mt-">
-                <span><img className="h-8 w-8"  src="https://cdn-icons-png.flaticon.com/128/1828/1828673.png" alt="" /></span>
-               <h1 className="text-violet-400 bg-v font- font-bold  text-3xl ">LEGAFIN</h1> 
-              </div> 
-                                                                             
+              <div className=" flex items-center justify-center gap-2  rounded-2xl h-12 w-full mt-">
+                <span><img className="h-8 w-8" src="https://cdn-icons-png.flaticon.com/128/1828/1828673.png" alt="" /></span>
+                <h1 className="text-violet-400 bg-v font- font-bold  text-3xl ">LEGAFIN</h1>
+              </div>
+
             </div>
           </NavLink>
         </div>
@@ -130,11 +131,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               <li key={index} className="mb-1">
                 <NavLink
                   to={item.path}
-                  className={`pl-4 pr-3 py-2 rounded-lg text-gray-800 dark:text-gray-100 flex items-center gap-4 transition duration-150 ${
-                    pathname.includes(item.path)
+                  className={`pl-4 pr-3 py-2 rounded-lg text-gray-800 dark:text-gray-100 flex items-center gap-4 transition duration-150 ${pathname.includes(item.path)
                       ? "bg-violet-500 text-white"
                       : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                  }`}
+                    }`}
                 >
                   {item.icon}
                   <span className="text-sm font-medium">{item.name}</span>
