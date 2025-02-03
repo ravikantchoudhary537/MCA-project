@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -7,20 +7,22 @@ import * as Progress from '@radix-ui/react-progress';
 import DemoForm from '../Form/DemoForm';
 import CapitalStructure from './Forms/Structure-of-Company-calculation';
 
+
 const SPICePartB = () => {
-    const [companyType, setCompanyType] = useState('');
-    const [shareCapital, setShareCapital] = useState('');
-    const [members, setMembers] = useState({
-        maxMembers: '',
-        nonEmployeeMaxMembers: '',
-        totalMembers: '',
-        nonEmployeeMembers: ''
-    });
+   
+    
+    // const [state,dispatch]=useReducer(reducer,initialState)
 
     const [currentStep, setCurrentStep] = useState(1);
+    const [formData, setFormData] = useState({
+        correspondenceAddress: '',
+        addressLine2: '',
+        pinCode: '',
+        mobileNumber: ''
+    });
 
     const nextStep = () => {
-        if (currentStep < 4) setCurrentStep(currentStep + 1);
+        if (currentStep < 10) setCurrentStep(currentStep + 1);
     };
 
     const prevStep = () => {
@@ -29,16 +31,15 @@ const SPICePartB = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted');
+        console.log('Form submitted with data:', formData);
     };
 
-    const progress = (currentStep - 1) * 25; // 100% divided by 3 steps => 33.33% each step
+    const progress = (currentStep - 1) * 10; // 100% divided by 10 steps => 10% each step
 
     return (
         <Form onSubmit={handleSubmit} className="space-y-8">
-           
             <div className="space-y-4">
-               
+                {/* Progress Bar */}
                 <div className="w-full">
                     <Progress.Root value={progress} max={100} className="h-2 rounded-full bg-gray-200">
                         <Progress.Indicator
@@ -47,27 +48,26 @@ const SPICePartB = () => {
                         />
                     </Progress.Root>
                 </div>
+                {/* Step Navigation */}
                 <div className="flex justify-center items-center space-x-4 mb-6">
-                    {[1, 2, 3,4].map((step) => (
+                    {[...Array(10).keys()].map((step) => (
                         <div
-                            key={step}
-                            className={`w-8 h-8 flex items-center justify-center rounded-full border-2 ${currentStep === step
+                            key={step + 1}
+                            className={`w-8 h-8 flex items-center justify-center rounded-full border-2 ${currentStep === step + 1
                                 ? 'bg-violet-500 text-white border-violet-500/20'
                                 : 'bg-gray-200 text-gray-500 border-violet-500/50'
                                 }`}
                         >
-                            <span className="font-semibold">{step}</span>
+                            <span className="font-semibold">{step + 1}</span>
                         </div>
                     ))}
-
                 </div>
             </div>
 
+            {/* Step 1 */}
             {currentStep === 1 && (
-                <div className='space-y-4'>
-
+                <div className="space-y-4">
                     <CapitalStructure />
-
                     <div className="flex justify-between mt-6">
                         <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
                         <Button type="button" onClick={nextStep} className="w-1/6">Next</Button>
@@ -75,47 +75,60 @@ const SPICePartB = () => {
                 </div>
             )}
 
+            {/* Step 2 */}
             {currentStep === 2 && (
+                <div className="space-y-4">
+                    <h3 className="text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold">Address of the Company</h3>
 
-                <div className='space-y-4'>
-                   
-                <h3 className='text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold' >Address of the Company</h3>
-
-                <div>
-                    <Label>Correspondence Address</Label>
-                    <Input type="text" placeholder="Enter Correspondence Address" className="w-full" />
-                </div>
-
-                <div>
-                    <Label>Address Line 2</Label>
-                    <Input type="text" placeholder="Enter Address Line 2" className="w-full" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-6">
                     <div>
-                        <Label>Pin Code</Label>
-                        <Input type="text" placeholder="Enter Pin Code" className="w-full" />
+                        <Label>Correspondence Address</Label>
+                        <Input
+                            type="text"
+                            name="correspondenceAddress"
+                            value={formData.correspondenceAddress}
+                            onChange={(e) => setFormData({ ...formData, correspondenceAddress: e.target.value })}
+                            placeholder="Enter Correspondence Address"
+                            className="w-full"
+                        />
                     </div>
 
                     <div>
-                        <Label>Mobile Number</Label>
-                        <Input type="text" placeholder="Enter Mobile Number" className="w-full" />
+                        <Label>Address Line 2</Label>
+                        <Input
+                            type="text"
+                            name="addressLine2"
+                            value={formData.addressLine2}
+                            onChange={(e) => setFormData({ ...formData, addressLine2: e.target.value })}
+                            placeholder="Enter Address Line 2"
+                            className="w-full"
+                        />
                     </div>
-                </div>
 
-                <div className="flex justify-between mt-6 ">
-                    <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
-                    <Button type="button" onClick={nextStep} className="w-1/6">Next</Button>
-                </div>
-            </div>
-            )}
+                    <div className="grid grid-cols-2 gap-6">
+                        <div>
+                            <Label>Pin Code</Label>
+                            <Input
+                                type="text"
+                                name="pinCode"
+                                value={formData.pinCode}
+                                onChange={(e) => setFormData({ ...formData, pinCode: e.target.value })}
+                                placeholder="Enter Pin Code"
+                                className="w-full"
+                            />
+                        </div>
 
-
-            {currentStep === 3 && (
-                <div className='space-y-4'>
-                    <h3 className='text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold' >Subscriber and Directors details</h3>
-
-                   <DemoForm />
+                        <div>
+                            <Label>Mobile Number</Label>
+                            <Input
+                                type="text"
+                                name="mobileNumber"
+                                value={formData.mobileNumber}
+                                onChange={(e) => setFormData({ ...formData, mobileNumber: e.target.value })}
+                                placeholder="Enter Mobile Number"
+                                className="w-full"
+                            />
+                        </div>
+                    </div>
 
                     <div className="flex justify-between mt-6">
                         <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
@@ -124,22 +137,39 @@ const SPICePartB = () => {
                 </div>
             )}
 
-            {currentStep === 4 && (
-                <div className='space-y-4'>
-                   
-                    <h3 className='text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold' >Non-individual Subscriber & Individual Subscriber other than Subscriber cum Directors</h3>
+            {/* Step 3 */}
+            {currentStep === 3 && (
+                <div className="space-y-4">
+                    <h3 className="text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold">Subscriber and Directors Details</h3>
+                    <DemoForm />
+                    <div className="flex justify-between mt-6">
+                        <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
+                        <Button type="button" onClick={nextStep} className="w-1/6">Next</Button>
+                    </div>
+                </div>
+            )}
 
-                    <div className="flex justify-between mt-6 ">
+            {/* Step 4 */}
+            {currentStep === 4 && (
+                <div className="space-y-4">
+                    <h3 className="text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold">
+                        Non-individual Subscriber & Individual Subscriber other than Subscriber cum Directors
+                    </h3>
+
+                    <div className="flex justify-between mt-6">
                         <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
                         <Button type="submit" className="w-1/6">Submit</Button>
                     </div>
                 </div>
             )}
+
+
         </Form>
     );
 };
 
 export default SPICePartB;
+
 
 
 

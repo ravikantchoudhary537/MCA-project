@@ -5,7 +5,6 @@ import StructureTopPart from './Structure-top';
 const CapitalStructure = () => {
   const [numClasses, setNumClasses] = useState(1);
   const [prenumClasses, setPreNumClasses] = useState(1);
-
   const [tables, setTables] = useState([{
     equityShares: 0,
     newequityShares: 0,
@@ -32,7 +31,7 @@ const CapitalStructure = () => {
     setNumClasses(num);
 
     if (isNaN(num) || num <= 0) {
-      setNumClasses(""); // Set to default value 1 if invalid input
+      setNumClasses(""); 
     } else {
       setNumClasses(num);
     }
@@ -82,7 +81,6 @@ const CapitalStructure = () => {
   const handleTableInputChange = (index, field, value) => {
     const updatedTables = [...tables];
     updatedTables[index][field] = value;
-
 
     if (field === 'equityShares' || field === 'nominalAmount') {
       updatedTables[index].totalAuthorizedCapital = updatedTables[index].equityShares * updatedTables[index].nominalAmount;
@@ -143,7 +141,7 @@ const CapitalStructure = () => {
         <h3 className="text-lg font-semibold mb-4">Class {index + 1} Equity Share Capital</h3>
         <div className="space-y-4">
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
+            <table className="min-w-full text-sm">``
               <thead>
                 <tr>
                   <th className="px-4 py-2 text-left">Class of Shares</th>

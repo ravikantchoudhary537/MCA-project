@@ -65,8 +65,8 @@ function Header({
             {/* <Help align="right" /> */}
             <ThemeToggle />
             {/*  Divider */}
-            <hr className="w-px h-6 bg-gray-200 dark:bg-gray-700/60 border-none" />
-            <UserMenu align="right" />
+            {/* <hr className="w-px h-6 bg-gray-200 dark:bg-gray-700/60 border-none" /> */}
+            {/* <UserMenu align="right" /> */}
 
           </div>
 
