@@ -6,12 +6,13 @@ import { Form } from '@/components/ui/form';
 import * as Progress from '@radix-ui/react-progress';
 import { reducer, initialState } from "./utils"
 import StructureCompany from './Forms/StructureCompany';
+import { AddreshCompany } from './Forms/AddreshCompany';
 
 const SPICeForms = () => {
 
     const [currentStep, setCurrentStep] = useState(1);
     const [state, dispatch] = useReducer(reducer, initialState)
-
+// console.log(state)
     const nextStep = () => {
         if (currentStep < 10) setCurrentStep(currentStep + 1);
     };
@@ -70,7 +71,7 @@ const SPICeForms = () => {
                 <div className="space-y-4">
                     <h3 className="text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold">Address of the Company</h3>
 
-
+                       <AddreshCompany state={state} dispatch={dispatch} />
 
 
                     <div className="flex justify-between mt-6">
