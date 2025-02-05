@@ -46,26 +46,32 @@ export function reducer(state, action) {
                 return entry;
             });
 
-            const totalAuthorized = updatedTable.reduce((total, entry) => {
+            const totalAuthorizedEquity = updatedTable.reduce((total, entry) => {
                 const authorizedEquity = parseFloat(entry.Total_Authorized_equity) || 0;
                 return total + authorizedEquity;
             }, 0);
 
-            const totalSubcribed = updatedTable.reduce((total, entry) => {
+            const totalSubscribedEquity = updatedTable.reduce((total, entry) => {
                 const subscribedEquity = parseFloat(entry.Total_Subscribed_equity) || 0;
                 return total + subscribedEquity;
             }, 0);
+
+            // Calculate total_authorized (adding both equity and preference)
+            const totalAuthorized = totalAuthorizedEquity + state.step1.base_total_authorized_preference;
+
+            // Calculate total_subscribed (adding both equity and preference subscribed values)
+            const totalSubscribed = totalSubscribedEquity + state.step1.base_total_subscribed_preference;
 
             return {
                 ...state,
                 step1: {
                     ...state.step1,
                     equity_share_Table: updatedTable,
-                    base_total_authorized: totalAuthorized || 0,
+                    base_total_authorized: totalAuthorizedEquity || 0,
+                    base_total_subscribed: totalSubscribedEquity || 0,
                     total_authorized: totalAuthorized,
                     total_classified: totalAuthorized,
-                    total_subscribed: totalSubcribed,
-
+                    total_subscribed: totalSubscribed,
                 },
             };
 
@@ -91,8 +97,7 @@ export function reducer(state, action) {
             };
 
         case "update-preference-share-table":
-
-            const { classIndex: index, field: updateField, value: updateValue } = action.payload; // Renaming to avoid name clash
+            const { classIndex: index, field: updateField, value: updateValue } = action.payload;
 
             const updatedPreferenceTable = state.step1.prefrence_share_Table.map((entry, idx) => {
                 if (idx === index) {
@@ -114,26 +119,33 @@ export function reducer(state, action) {
                 }
                 return entry;
             });
+
             const totalAuthorizedPrefrence = updatedPreferenceTable.reduce((total, entry) => {
                 const authorizedPrefrence = parseFloat(entry.Total_Authorized_prefrence) || 0;
                 return total + authorizedPrefrence;
             }, 0);
 
-            const totalSubcribedPrefrence = updatedPreferenceTable.reduce((total, entry) => {
+            const totalSubscribedPrefrence = updatedPreferenceTable.reduce((total, entry) => {
                 const subscribedPrefrence = parseFloat(entry.Total_Subscribed_prefrence) || 0;
                 return total + subscribedPrefrence;
             }, 0);
+
+            // Calculate total_authorized (adding both equity and preference)
+            const totalAuthorizedPref = totalAuthorizedPrefrence + state.step1.base_total_authorized;
+
+            // Calculate total_subscribed (adding both equity and preference subscribed values)
+            const totalSubscribedPref = totalSubscribedPrefrence + state.step1.base_total_subscribed;
 
             return {
                 ...state,
                 step1: {
                     ...state.step1,
                     prefrence_share_Table: updatedPreferenceTable,
-                    base_total_authorized: totalAuthorizedPrefrence || 0,
-                    total_authorized: totalAuthorizedPrefrence,
-                    total_classified: totalAuthorizedPrefrence,
-                    total_subscribed: totalSubcribedPrefrence,
-                    // equity_prefrence_total:
+                    base_total_authorized_preference: totalAuthorizedPrefrence || 0,
+                    base_total_subscribed_preference: totalSubscribedPrefrence || 0,
+                    total_authorized: totalAuthorizedPref,
+                    total_classified: totalAuthorizedPref,
+                    total_subscribed: totalSubscribedPref,
                 },
             };
 
@@ -143,7 +155,10 @@ export function reducer(state, action) {
                 step1: {
                     ...state.step1,
                     total_unclassified: action.payload,
-                    total_authorized: Number(state.step1.base_total_authorized) + Number(action.payload),
+                    // Total unclassified is calculated with Total_Authorized only (equity + preference)
+                    total_authorized: Number(state.step1.base_total_authorized) + Number(state.step1.base_total_authorized_preference) + Number(action.payload),
+                    // Don't add Total_Subscribed to total_unclassified calculation
+                    total_subscribed: state.step1.total_subscribed,  // Keep total_subscribed as it is
                 },
             };
 
@@ -164,7 +179,7 @@ export function reducer(state, action) {
                     ...state.step1,
                     Details_articles_table: {
                         ...state.step1.Details_articles_table,
-                        [articleField]: articleValue, // Use the renamed variable here
+                        [articleField]: articleValue,
                     },
                 },
             };
@@ -183,7 +198,7 @@ export function reducer(state, action) {
             };
 
         case "set-company-is":
-            const { companyChoice } = action.payload; // assuming payload contains { companyChoice: 'having_share_capital' | 'having_not_share_capital' }
+            const { companyChoice } = action.payload;
             return {
                 ...state,
                 step1: {
@@ -204,6 +219,16 @@ export function reducer(state, action) {
                 },
             };
 
+        case "set-step-2-fields":
+            // console.log("set-step-2-fields:", action.payload);   
+            return {
+                ...state,
+                step2: {
+                    ...state.step2,
+                    [action.payload.field]: action.payload.value,
+                },
+            };
+
         default:
             return state;
     }
@@ -211,30 +236,59 @@ export function reducer(state, action) {
 
 export const initialState = {
     step1: {
-        AOA: { yes: true, no: false }, // Default to yes
+        AOA: { yes: true, no: false },
         Articles_entrenchment: "",
         Details_articles_table: { serialNo: "", articleNumber: "", description: "" },
         company_is: {
-            having_share_capital: true, // Default to 'having_share_capital' selected
+            having_share_capital: true,
             having_not_share_capital: false,
         },
         base_total_authorized: 0,
+        base_total_authorized_preference: 0,
+        base_total_subscribed: 0,
+        base_total_subscribed_preference: 0,
         total_authorized: 0,
         total_classified: 0,
         total_subscribed: 0,
         total_unclassified: 0,
-
         number_classes: 1,
-        equity_share_Table: [1],
-
+        equity_share_Table: [{
+            Class_shares: "",
+            Authorized_number_equity: "",
+            Subscribed_number_equity: "",
+            Total_Authorized_equity: "",
+            Authorized_nominal_amount: "",
+            Subscribed_nominal_amount: "",
+            Total_Subscribed_equity: "",
+        }],
         number_classes_prefrence: 1,
-        prefrence_share_Table: [1],
-
+        prefrence_share_Table: [{
+            Class_shares_prefrence: "",
+            Authorized_number_prefrence: "",
+            Subscribed_number_prefrence: "",
+            Total_Authorized_prefrence: "",
+            Authorized_nominal_amount_prefrence: "",
+            Subscribed_nominal_amount_prefrence: "",
+            Total_Subscribed_prefrence: "",
+        }],
     },
-    step2: {},
+    step2: {
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        pinCode: '',
+        areaLocality: '',
+        city: '',
+        district: '',
+        stateUt: '',
+        phoneNumber: '',
+        mobileNumber: '',
+        fax: '',
+        email: '',
+        isRegisteredOffice: '', // This will hold 'yes' or 'no'
+        longitude: '',
+        latitude: '',
+        officeAddressProof: null,
+        utilityBill: null,
+        registrarOffice: '',
+    },
 };
-
-// total_authorized = Total_Authorized_equity + Total_Authorized_prefrence
-// total_subscribed = Total_Subscribed_equity + Total_Subscribed_prefrence
-
-
