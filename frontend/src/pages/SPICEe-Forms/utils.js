@@ -284,11 +284,12 @@ export const initialState = {
         mobileNumber: '',
         fax: '',
         email: '',
-        isRegisteredOffice: '', // This will hold 'yes' or 'no'
+        isRegisteredOffice: '',
         longitude: '',
         latitude: '',
         officeAddressProof: null,
         utilityBill: null,
         registrarOffice: '',
     },
+    step3: {},
 };
