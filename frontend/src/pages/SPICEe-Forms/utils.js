@@ -228,7 +228,7 @@ export function reducer(state, action) {
                     [action.payload.field]: action.payload.value,
                 },
             };
-
+           
         default:
             return state;
     }

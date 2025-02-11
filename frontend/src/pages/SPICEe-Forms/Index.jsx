@@ -7,12 +7,15 @@ import * as Progress from '@radix-ui/react-progress';
 import { reducer, initialState } from "./utils"
 import StructureCompany from './Forms/StructureCompany';
 import { AddreshCompany } from './Forms/AddreshCompany';
+import SubscriberDirector from './Forms/subscriberDirector';
+
+
 
 const SPICeForms = () => {
 
     const [currentStep, setCurrentStep] = useState(1);
     const [state, dispatch] = useReducer(reducer, initialState)
-// console.log(state)
+         // console.log(state)
     const nextStep = () => {
         if (currentStep < 10) setCurrentStep(currentStep + 1);
     };
@@ -70,10 +73,7 @@ const SPICeForms = () => {
             {currentStep === 2 && (
                 <div className="space-y-4">
                     <h3 className="text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold">Address of the Company</h3>
-
                        <AddreshCompany state={state} dispatch={dispatch} />
-
-
                     <div className="flex justify-between mt-6">
                         <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
                         <Button type="button" onClick={nextStep} className="w-1/6">Next</Button>
@@ -84,7 +84,7 @@ const SPICeForms = () => {
             {currentStep === 3 && (
                 <div className="space-y-4">
                     <h3 className="text-2xl mb-4 mt-6 text-center text-violet-500 font-semibold">Subscriber and Directors Details</h3>
-
+                      <SubscriberDirector state={state} dispatch={dispatch} />
                     <div className="flex justify-between mt-6">
                         <Button type="button" onClick={prevStep} className="w-1/6">Previous</Button>
                         <Button type="button" onClick={nextStep} className="w-1/6">Next</Button>
